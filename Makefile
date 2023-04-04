@@ -6,7 +6,7 @@
 #    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/04 17:10:07 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/04 18:42:26 by samjaabo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,6 @@ MAIN_OBJS = $(MAIN_SRC:.c=.o)
 # directory variables
 LIBFT_DIR = ./libft/
 GET_NEXT_LINE_DIR = ./get_next_line/
-FT_PRINTF_DIR = ./ft_printf/
 
 #src files
 LIBFT_FILES = ft_atoi.c ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
@@ -38,31 +37,28 @@ LIBFT_FILES = ft_atoi.c ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
 
 GET_NEXT_LINE_FILES = get_next_line_bonus.c get_next_line_utils_bonus.c
 
-FT_PRINTF_FILES = ft_printf_utils.c ft_printf.c ft_to_hex.c ft_to_nbr.c ft_to_put.c
-
 #src files with path
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR),$(LIBFT_FILES))
 GET_NEXT_LINE_SRCS = $(addprefix $(GET_NEXT_LINE_DIR),$(GET_NEXT_LINE_FILES))
-FT_PRINTF_SRCS = $(addprefix $(FT_PRINTF_DIR),$(FT_PRINTF_FILES))
 # object files variables
 LIBFT_OBJS =	$(LIBFT_SRCS:%.c=%.o)
 GET_NEXT_LINE_OBJS =	$(GET_NEXT_LINE_SRCS:%.c=%.o)
-FT_PRINTF_OBJS = $(FT_PRINTF_SRCS:%.c=%.o)
+
 
 all: $(NAME) run
 
 clean:
-	@rm -rf $(LIBFT_OBJS) $(GET_NEXT_LINE_OBJS) $(FT_PRINTF_OBJS) $(MAIN_OBJS)
+	@rm -rf $(LIBFT_OBJS) $(GET_NEXT_LINE_OBJS) $(MAIN_OBJS)
 
 fclean: clean
 	@rm -f $(NAME)
 
 re: clean all
 
-$(NAME): $(LIBFT_OBJS) $(GET_NEXT_LINE_OBJS) $(FT_PRINTF_OBJS) $(MAIN_OBJS)
-	@ar rc $(NAME) $(LIBFT_OBJS) $(GET_NEXT_LINE_OBJS) $(FT_PRINTF_OBJS) $(MAIN_OBJS)
+$(NAME): $(LIBFT_OBJS) $(GET_NEXT_LINE_OBJS) $(MAIN_OBJS)
+	@ar rc $(NAME) $(LIBFT_OBJS) $(GET_NEXT_LINE_OBJS) $(MAIN_OBJS)
 
-%.o: %.c header.h ./libft/libft.h ./get_next_line/get_next_line_bonus.h ./ft_printf/ft_printf.h
+%.o: %.c header.h ./libft/libft.h ./get_next_line/get_next_line_bonus.h
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 run:

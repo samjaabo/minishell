@@ -4,7 +4,7 @@ void ft_printar(char **t)
 {
 	if (!t)
 	{
-		ft_printf("(null)");
+		printf("(null)");
 		return ;
 	}
 	while(*t)
