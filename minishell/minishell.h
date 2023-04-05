@@ -79,5 +79,6 @@ typedef struct s_cmd {
 
 int		ft_exec(t_cmd *cmd, char *path, char **env);
 t_cmd	*ft_translate(t_token_list *list);
+int		ft_dup_default_stdio(void);
 
 #endif

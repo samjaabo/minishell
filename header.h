@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/04 16:02:45 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:18:37 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ enum e_constants {
 	NEW_STDOU=4,
 	NEW_STDER=5,
 	HERE_DOCUMENT=2,
-	FILE_TO_STDIN=3,
-	WRITE_TO_FILE=4,
+	FILE_TO_STDIN=4,
+	WRITE_TO_FILE=3,
 	APPEND_TO_FILE=1,
 	COMMAND_ARG=9,
 	COMMAND=9,
@@ -83,12 +83,14 @@ typedef struct s_cmd {
 	// char			*key;
 	char			**redirs;
 	char			**types;
+	int				std_in;
+	int				std_out;
 	int				id;
 	struct s_cmd	*next;
 }	t_cmd;
 
 //=============lists.c===============
-t_cmd	*ft_lstnew(void);
+t_cmd	*ft_lstnew(int ids);
 void	ft_addlast(t_cmd **head, t_cmd *new);
 char	*ft_clear(char **ar);
 void	ftx_lstclear(t_cmd **head);
@@ -102,7 +104,8 @@ int		ft_return_default_stdio(void);
 int		ft_dup_default_stdio(void);
 
 //=============redirection.c===============
-
+int		ft_pipe_in_parent(t_cmd *cmd);
+int		ft_pipe_in_child(t_cmd *cmd);
 int		ft_file_to_stdin(char *file);
 int		ft_here_doc(char *limiter);
 int		ft_write_append(char *file);

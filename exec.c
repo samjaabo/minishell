@@ -6,11 +6,25 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/04 17:26:23 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:59:12 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+void	ft_child_close_fds_copy(void)
+{
+	close(NEW_STDIN);
+	close(NEW_STDOU);
+	close(NEW_STDER);
+}
+
+void	ft_child_close_uneeded_fds(void)
+{
+	close(0);
+	close(1);
+	close(2);
+}
 
 int	ft_return_default_stdio(void)
 {
@@ -68,19 +82,28 @@ static int	ft_child(t_cmd *cmd, char *path, char **env)
 		if (!s)
 			return (ERROR);
 	}
+	if (ft_pipe_in_child(cmd) == ERROR)
+		return (ERROR);
 	if (ft_redirection(cmd) == ERROR)
 		return (ERROR);
+	ft_child_close_fds_copy();
 	if (cmd->args)
 	{
 		execve(cmd->args[0], cmd->args, env);
 		return (ft_perror(cmd->args[0]), ERROR);
 	}
+	ft_child_close_uneeded_fds();
 	return (SUCCESS);
 }
 
-int	ft_parent(pid_t pid)
+int	ft_parent(t_cmd *cmd)
 {
-	return (pid);
+	if (cmd->std_in > 5 && close(cmd->std_in) < 0)
+		return (ft_perror("close syscall"), ERROR);
+	if (cmd->std_out > 5 && close(cmd->std_out) < 0)
+		return (ft_perror("close syscall"), ERROR);
+	ft_return_default_stdio();
+	return (SUCCESS);
 }
 
 int	ft_exec(t_cmd *cmd, char *path, char **env)
@@ -88,22 +111,22 @@ int	ft_exec(t_cmd *cmd, char *path, char **env)
 	pid_t		pid;
 	int			status;
 
-	status = 0;
+	status = SUCCESS;
 	while (cmd)
 	{
+		if (ft_pipe_in_parent(cmd) == ERROR)
+				return(ERROR);
 		pid = fork();
 		if (pid < 0)
 			return (ft_perror("fork syscall"), ERROR);
 		if (pid == 0)
 			return (ft_child(cmd, path, env));
-		//ft_parent(pid);
-		//always first parameter should be a name of the program
-		//printf("hello from main proccess %d\n", cmd->id);
+		ft_parent(cmd);
 		cmd = cmd->next;
 	}
 	while (wait(&status) != -1)//be aware of intrrupt
 		;
-	if (errno != ECHILD)
+	if (errno != ECHILD && errno != EINTR)
 		return (ft_perror("wait syscall") ,ERROR);
 	return (status);
 }

@@ -6,22 +6,23 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:26:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/04 16:03:26 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:18:34 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-t_cmd	*ft_lstnew(void)
+t_cmd	*ft_lstnew(int ids)
 {
 	t_cmd		*node;
-	static int	ids = 0;
 
 	node = malloc(sizeof(t_cmd));
 	if (!node)
 		return (node);
 	ft_bzero(node, sizeof(t_cmd));
-	node->id = ids++;
+	node->id = ids;
+	node->std_in = STDIN_FILENO;
+	node->std_out = STDOUT_FILENO;
 	return (node);
 }
 

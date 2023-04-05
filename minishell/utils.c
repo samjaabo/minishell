@@ -15,7 +15,7 @@ int ft_strlen(char *str)
     int i;
 
     i = 0;
-    while (str[i])
+    while (str && str[i])
         i++;
     return (i);
 }
@@ -143,6 +143,8 @@ char	*ft_strchr(char *str, int c)
 	int		i;
 	char	*ptr;
 
+	if (!str)
+		return  (NULL);
 	if (c == '\0')
 		return ((char *)str + ft_strlen(str));
 	ptr = (NULL);

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:47:50 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/02 16:08:56 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:01:11 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ int	ft_here_doc(char *limiter)
 	char	*buff;
 	int		fds[2];
 
+	if (dup2(NEW_STDIN, 0) < 0)//solve when more than one heredoc is requested
+		return (ERROR);
 	if (pipe(fds) < 0)
 		return (ERROR);
 	while (1337)
 	{
 		write(1, "heredoc> ", 10);
-		buff = get_next_line(0);
+		buff = get_next_line(0);//when it comes back it finds that 0 points to pipe
 		if (!buff)
 			break ;
 		if (ft_strlen(buff) - 1 == ft_strlen(limiter)
@@ -84,5 +86,37 @@ int	ft_file_to_stdin(char *file)
 		return (ERROR);
 	if (close(fd) < 0)
 		return (ERROR);
+	return (SUCCESS);
+}
+
+int	ft_pipe_in_parent(t_cmd *cmd)
+{
+	int	fd[2];
+
+	if (!cmd->next)
+		return (SUCCESS);
+	if (pipe(fd) < 0)
+		return (ft_perror("pipe syscall") ,ERROR);
+	cmd->std_out = fd[1];
+	cmd->next->std_in = fd[0];
+	return (SUCCESS);
+}
+
+int	ft_pipe_in_child(t_cmd *cmd)
+{
+	if (cmd->id != 0)
+	{
+		if (dup2(cmd->std_in, STDIN_FILENO) < 0)
+			return (ft_perror("dup2 syscall"), ERROR);
+		if (cmd->std_in > 5 && close(cmd->std_in) < 0)
+			return (ft_perror("close syscall"), ERROR);
+	}
+	if (cmd->next)
+	{
+		if (dup2(cmd->std_out, STDOUT_FILENO) < 0)
+			return (ft_perror("dup2 syscall"), ERROR);
+		if (cmd->std_out > 5 && close(cmd->std_out) < 0)
+			return (ft_perror("close2  syscall"), ERROR);
+	}
 	return (SUCCESS);
 }

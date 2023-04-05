@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:06:40 by byoussef          #+#    #+#             */
-/*   Updated: 2023/04/04 17:22:42 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:48:41 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	body(char *line, char **env)
 		c = NULL;
 		finals_m(tokens, &finals);
 		head = ft_translate(finals);
-		//ft_printcmd(head);
+		// ft_printcmd(head);
 		ft_exec(head, getenv("PATH"), env);
 		// while (finals)
 		// {
@@ -42,7 +42,8 @@ char    *prompt(void)
 {
     char	*line;
 
-	line = readline("[minishell]$ ");
+	line = readline("\e[1;32mminishell\e[0m\e[1;91m$\e[0m ");
+	//line = readline("/samjaabo/files$ ");
 	add_history(line);
 	
 	line = remove_additional_spaces(line);
@@ -55,6 +56,8 @@ int main(int i, char **v, char **env)
 
 	(void)v;
 	(void)i;
+	system("clear");
+	ft_dup_default_stdio();
     while (1)
     {
 		line = prompt();
@@ -62,4 +65,7 @@ int main(int i, char **v, char **env)
 			exit(0);
 		body(line, env);
     }
+	close(3);
+	close(4);
+	close(5);
 }

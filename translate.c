@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 15:06:00 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/04 17:27:29 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:20:20 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	ft_trans_args(t_list *list, t_cmd *cmd)
 		if (!cmd->types || !cmd->redirs)
 			return (ERROR);
 	}
-	else if (list->type == COMMAND)
+	else if (list->type == COMMAND || list->type == COMMAND_ARG)
 	{
 		cmd->args = ft_realloc(cmd->args, ft_strdup(list->value));
 		if (!cmd->args)
@@ -37,9 +37,11 @@ t_cmd	*ft_translate(t_list *list)
 {
 	t_cmd	*cmd;
 	t_cmd	*head;
+	int		ids;
 
+	ids = 0;
 	head = NULL;
-	cmd = ft_lstnew();
+	cmd = ft_lstnew(ids++);
 	if (!cmd)
 		return (NULL);
 	ft_addlast(&head, cmd);
@@ -47,14 +49,13 @@ t_cmd	*ft_translate(t_list *list)
 	{
 		if (list->type == PIPE)
 		{
-			cmd = ft_lstnew();
+			cmd = ft_lstnew(ids++);
 			if (!cmd)
 				return (ftx_lstclear(&head) ,NULL);
 			ft_addlast(&head, cmd);
 		}
 		if (ft_trans_args(list, cmd) == ERROR)
-			return (ftx_lstclear(&head),exit(12), NULL);
-		//printf("%s\n", list->value);
+			return (ftx_lstclear(&head), NULL);
 		list = list->next;
 	}
 	return (head);
