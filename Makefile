@@ -6,13 +6,13 @@
 #    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/05 16:16:55 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/07 16:27:55 by samjaabo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = program.a
 CC = cc
-CFLAGS = -Wall -Wextra #-g -fsanitize=address
+CFLAGS = -Wall -Wextra -fsanitize=address
 
 MAIN_SRC = main.c lists.c exec.c redirection.c split.c utils.c \
 			cmd_path.c translate.c minishell/minishell.c minishell/utils.c minishell/utils2.c \

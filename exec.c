@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/05 15:59:12 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/07 16:28:20 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int	ft_exec(t_cmd *cmd, char *path, char **env)
 		if (pid < 0)
 			return (ft_perror("fork syscall"), ERROR);
 		if (pid == 0)
-			return (ft_child(cmd, path, env));
+			return (exit(ft_child(cmd, path, env)), 0);
 		ft_parent(cmd);
 		cmd = cmd->next;
 	}

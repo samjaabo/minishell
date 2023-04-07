@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byoussef <byoussef@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:06:28 by byoussef          #+#    #+#             */
-/*   Updated: 2023/03/31 17:03:28 by byoussef         ###   ########.fr       */
+/*   Updated: 2023/04/07 16:27:40 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ int    how_much_to_allocate(char *line)
     int i = 0;
     int k = 0;
     int l;
+
+    if (!line)
+        return (0);
     while (line[i] == ' ')
         i++;
     while (line[i])
@@ -76,9 +79,9 @@ char *remove_additional_spaces(char *line)
     k = 0;
     flag = 0;
     new = malloc(j + 1);
-    while (line[i] == ' ')
+    while (line && line[i] == ' ')
         i++;
-    while (line[i])
+    while (line && line[i])
     {
         if (line[i] != ' ')
         {

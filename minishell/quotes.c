@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byoussef <byoussef@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 12:23:39 by byoussef          #+#    #+#             */
-/*   Updated: 2023/04/01 12:19:31 by byoussef         ###   ########.fr       */
+/*   Updated: 2023/04/07 16:30:08 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char	*quotes_maker(t_token_list	**tokens,char *line)
 			i++;
 			j++;
 		}
-		
 		if(line[i] == 39 && check == 1)
 		{
 			i++;

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:06:34 by byoussef          #+#    #+#             */
-/*   Updated: 2023/04/04 17:11:04 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/07 16:33:41 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void    syntax_red(t_token_list **tokens)
 		}
 		while (t_tokens)
 		{
-			if ((t_tokens->value[ft_strlen(t_tokens->value) - 1] == '>'
+			if (t_tokens->value[0] && (t_tokens->value[ft_strlen(t_tokens->value) - 1] == '>'
 				|| t_tokens->value[ft_strlen(t_tokens->value) - 1] == '<')
 			&& !t_tokens->next) // ila kan f lakher
 			{
