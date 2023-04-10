@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/07 16:28:20 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/10 18:25:46 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,18 @@
 
 void	ft_child_close_fds_copy(void)
 {
-	close(NEW_STDIN);
-	close(NEW_STDOU);
-	close(NEW_STDER);
-}
-
-void	ft_child_close_uneeded_fds(void)
-{
-	close(0);
-	close(1);
-	close(2);
+	close(g_data.new_stdin);
+	close(g_data.new_stdout);
+	close(g_data.new_stderr);
 }
 
 int	ft_return_default_stdio(void)
 {
-	if (dup2(NEW_STDIN, STDIN_FILENO) < 0)
+	if (dup2(g_data.new_stdin, STDIN_FILENO) < 0)
 		return (ERROR);
-	if (dup2(NEW_STDOU, STDOUT_FILENO) < 0)
+	if (dup2(g_data.new_stdout, STDOUT_FILENO) < 0)
 		return (ERROR);
-	if (dup2(NEW_STDER, STDERR_FILENO) < 0)
-		return (ERROR);
-	return (SUCCESS);
-}
-
-int	ft_dup_default_stdio(void)
-{
-	if (dup2(STDIN_FILENO, NEW_STDIN) < 0)
-		return (ERROR);
-	if (dup2(STDOUT_FILENO, NEW_STDOU) < 0)
-		return (ERROR);
-	if (dup2(STDERR_FILENO, NEW_STDER) < 0)
+	if (dup2(g_data.new_stderr, STDERR_FILENO) < 0)
 		return (ERROR);
 	return (SUCCESS);
 }
@@ -92,16 +74,12 @@ static int	ft_child(t_cmd *cmd, char *path, char **env)
 		execve(cmd->args[0], cmd->args, env);
 		return (ft_perror(cmd->args[0]), ERROR);
 	}
-	ft_child_close_uneeded_fds();
 	return (SUCCESS);
 }
 
 int	ft_parent(t_cmd *cmd)
 {
-	if (cmd->std_in > 5 && close(cmd->std_in) < 0)
-		return (ft_perror("close syscall"), ERROR);
-	if (cmd->std_out > 5 && close(cmd->std_out) < 0)
-		return (ft_perror("close syscall"), ERROR);
+	ft_close_pipe_in_parent(cmd);
 	ft_return_default_stdio();
 	return (SUCCESS);
 }
@@ -109,24 +87,23 @@ int	ft_parent(t_cmd *cmd)
 int	ft_exec(t_cmd *cmd, char *path, char **env)
 {
 	pid_t		pid;
-	int			status;
 
-	status = SUCCESS;
 	while (cmd)
 	{
 		if (ft_pipe_in_parent(cmd) == ERROR)
-				return(ERROR);
+			return(ERROR);
 		pid = fork();
 		if (pid < 0)
 			return (ft_perror("fork syscall"), ERROR);
 		if (pid == 0)
-			return (exit(ft_child(cmd, path, env)), 0);
+			return (ft_child(cmd, path, env), exit(0), 0);
 		ft_parent(cmd);
 		cmd = cmd->next;
 	}
-	while (wait(&status) != -1)//be aware of intrrupt
+	while (wait(&g_data.exit_status) != -1)
 		;
 	if (errno != ECHILD && errno != EINTR)
 		return (ft_perror("wait syscall") ,ERROR);
-	return (status);
+	printf("exit statu = %d\n", g_data.exit_status);
+	return (g_data.exit_status);
 }

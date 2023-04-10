@@ -6,18 +6,19 @@
 #    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/07 16:27:55 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/10 16:58:35 by samjaabo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = program.a
 CC = cc
-CFLAGS = -Wall -Wextra -fsanitize=address
+CFLAGS = -Wall -Wextra #-fsanitize=address
 
-MAIN_SRC = main.c lists.c exec.c redirection.c split.c utils.c \
+MAIN_SRC = signals.c main.c lists.c exec.c redirection.c split.c utils.c \
 			cmd_path.c translate.c minishell/minishell.c minishell/utils.c minishell/utils2.c \
 			minishell/tokenizer.c minishell/tokenizer_utils.c minishell/syntax.c minishell/ft_strjoin.c \
-			minishell/ft_memcpy.c minishell/quotes.c minishell/finals_maker.c
+			minishell/ft_memcpy.c minishell/quotes.c minishell/finals_maker.c \
+			pipe.c
 			
 MAIN_OBJS = $(MAIN_SRC:.c=.o)
 # directory variables
@@ -44,7 +45,6 @@ GET_NEXT_LINE_SRCS = $(addprefix $(GET_NEXT_LINE_DIR),$(GET_NEXT_LINE_FILES))
 LIBFT_OBJS =	$(LIBFT_SRCS:%.c=%.o)
 GET_NEXT_LINE_OBJS =	$(GET_NEXT_LINE_SRCS:%.c=%.o)
 
-
 all: $(NAME) run
 
 clean:
@@ -59,10 +59,13 @@ $(NAME): $(LIBFT_OBJS) $(GET_NEXT_LINE_OBJS) $(MAIN_OBJS)
 	@ar rc $(NAME) $(LIBFT_OBJS) $(GET_NEXT_LINE_OBJS) $(MAIN_OBJS)
 
 %.o: %.c header.h ./libft/libft.h ./get_next_line/get_next_line_bonus.h
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) -I/Users/samjaabo/local/include $(CFLAGS) -c $< -o $@
 
 run:
 	@#@clear
-	@$(CC) -lreadline $(CFLAGS) $(NAME) -o  ./program
+	@$(CC) -L/Users/samjaabo/local/lib -lreadline $(CFLAGS) $(NAME) -o  ./tmp/program
 	@$(MAKE) fclean
-	@./program
+	@#cd tmp
+	@#./program
+	@#cd ../
+	

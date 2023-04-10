@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lsts.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byoussef <byoussef@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:05:43 by byoussef          #+#    #+#             */
-/*   Updated: 2023/03/31 16:05:44 by byoussef         ###   ########.fr       */
+/*   Updated: 2023/04/07 22:54:32 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,16 @@ t_token_list	*ft_lstlast(t_token_list *head)
 
 void	ft_lstclear(t_token_list	**lst)
 {
-	t_token_list	*tmp;
+	t_token_list	*next;
+	t_token_list	*head;
 
-	tmp = *lst;
-	while (tmp)
+	head = *lst;
+	while (head)
 	{
-		tmp = tmp->next;
-		free(*lst);
-		*lst = tmp;
+		next = head->next;
+		free(head->value);
+		free(head);
+		head = next;
 	}
 	*lst = NULL;
 }

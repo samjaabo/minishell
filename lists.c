@@ -6,11 +6,12 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:26:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/05 15:18:34 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/10 18:03:54 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
 
 t_cmd	*ft_lstnew(int ids)
 {
@@ -66,6 +67,7 @@ void	ftx_lstclear(t_cmd **head)
 		ft_clear(node->args);
 		ft_clear(node->redirs);
 		ft_clear(node->types);
+		free(node);
 		node = next;
 	}
 	*head = NULL;

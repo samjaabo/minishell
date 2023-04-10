@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/05 15:18:37 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/10 17:40:10 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,19 @@
 
 # include <stdio.h>
 # include <readline/readline.h>
-# include <string.h>
-# include <sys/types.h>
+# include <readline/history.h>
+// # include <sys/types.h>
 # include <errno.h>
 
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
 
-# include <stdarg.h>
-# include <stdint.h>
-# include <limits.h>
+// # include <stdint.h>
+// # include <limits.h>
 
-# include <sys/time.h>
 #include <signal.h>
-#include <mlx.h>
+#include <sys/stat.h>
 
 typedef struct s_list {
 	char			*value;
@@ -59,21 +57,28 @@ enum e_constants {
 	COMMAND=9,
 	MYFILE=1337,
 	PIPE=6,
+	STATUS_READIND,
+	STATUS_EXECUTING,
 };
 
+//=============<GLOBAL>===============
+typedef struct s_data {
+	char			**env;
+	int				status;
+	int				exit_status;
+	int				new_stdin;
+	int				new_stdout;
+	int				new_stderr;
+	int				pipe_old;
+	int				pipe_in;
+	int				pipe_out;
+	int				*here_doc;
+	char			*succ_str;
+	char			*fail_str;
+}	t_data;
 
-typedef struct s_dict {
-	struct s_dict	**object;
-	struct s_dict	*next;
-	char			*key;
-	char			*value;
-	int				oper;
-}	t_dict;
-
-typedef char	t_mallochar;
-//utils functions
-//utils
-int		ft_printf(const char *format, ...);
+t_data	g_data;
+//===================================
 
 //===================================
 //=============lists.c===============
@@ -101,11 +106,13 @@ void	ft_printcmd(t_cmd *head);
 
 int		ft_exec(t_cmd *cmd, char *path, char **env);
 int		ft_return_default_stdio(void);
-int		ft_dup_default_stdio(void);
 
-//=============redirection.c===============
+//=============pipe.c===============
 int		ft_pipe_in_parent(t_cmd *cmd);
 int		ft_pipe_in_child(t_cmd *cmd);
+int		ft_close_pipe_in_parent(t_cmd *cmd);
+
+//=============redirection.c===============
 int		ft_file_to_stdin(char *file);
 int		ft_here_doc(char *limiter);
 int		ft_write_append(char *file);
@@ -116,15 +123,28 @@ char	**ft_mysplit(const char *str, char c);
 char	**ft_realloc(char **array, char *new);
 
 //=============utils.c===============
+void	ft_init(void);
+void	ft_exit(void);
+int		ft_realloc_fd(int new);
+int		ft_close_fds(void);
 void 	ft_printar(char **t);
 void	ft_perror(const char *msg);
 void	ft_error(const char *cmd, const char *msg);
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
 
 //=============cmd_path.c===============
-t_mallochar	*ft_get_cmd_path(const char *path, const char *cmd);
+char	*ft_get_cmd_path(const char *path, const char *cmd);
 
 //=============translate.c===============
 t_cmd	*ft_translate(t_list *list);
+
+
+//=============signals.c.c===============
+void	ft_control_d(void);
+int		ft_signals(void);
+//////tmp
+t_cmd	*body(char *line);
+
+char    *prompt(int exit_status, char *succ, char *fail);
 
 #endif

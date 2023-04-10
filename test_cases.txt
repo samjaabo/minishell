@@ -1,0 +1,20 @@
+export var'='
+export var=
+export var
+
+cat | ls
+<<ok <<ok | <<ok | <<ok
+''
+""
+-----------
+bash & Control-D
+echo $?
+-----------
+now test
+bash
+run unkownommand
+empty prompt & Control-D
+echo $?
+------------
+sleep 120 &&  control-C
+-------------
