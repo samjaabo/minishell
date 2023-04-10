@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/15 12:01:23 by samjaabo          #+#    #+#             */
-/*   Updated: 2022/12/10 14:34:39 by samjaabo         ###   ########.fr       */
+/*   Created: 2022/10/16 10:30:12 by samjaabo          #+#    #+#             */
+/*   Updated: 2023/04/10 20:59:08 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdlib.h>
+char	*ft_strchr(const char *str, int c)
+{
+	char	*s;
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-size_t	ft_strlen(const char *s);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
-char	*get_next_line(int fd);
-
-#endif
+	s = (char *)str;
+	while (*s)
+		if (*s++ == c)
+			return (--s);
+	if (c == 0)
+		return (s);
+	return (NULL);
+}

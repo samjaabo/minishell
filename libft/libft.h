@@ -6,18 +6,18 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 12:37:37 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/02 14:49:03 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/10 21:00:58 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include "../get_next_line/get_next_line_bonus.h"
 # include <unistd.h>
 # include <stdlib.h>
 
-
+int 				ft_strlen(const char *s);
+char				*ft_strchr(const char *str, int c);
 void				ft_bzero(void *s, size_t n);
 void				*ft_calloc(size_t count, size_t size);
 int					ft_isalnum(int c);
@@ -26,7 +26,7 @@ int					ft_isascii(int c);
 int					ft_isdigit(int c);
 int					ft_isprint(int c);
 char				*ft_itoa(int n);
-int	ft_atoi(const char *str);
+int					ft_atoi(const char *str);
 void				*ft_memchr(const void *s, int c, size_t n);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 void				*ft_memcpy(void *dst, const void *src, size_t n);

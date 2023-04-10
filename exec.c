@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/10 18:25:46 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/10 21:58:16 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ static int	ft_redirection(t_cmd *cmd)
 	while (cmd && cmd->redirs && cmd->redirs[i] && ret != ERROR)
 	{
 		if (ft_atoi(cmd->types[i]) == HERE_DOCUMENT)
-			ret = ft_here_doc(cmd->redirs[i]);
+		{
+			ret = dup2(cmd->here_doc, STDIN_FILENO);
+			ret = close(cmd->here_doc);
+		}
 		else if (ft_atoi(cmd->types[i]) == FILE_TO_STDIN)
 			ret = ft_file_to_stdin(cmd->redirs[i]);
 		else if (ft_atoi(cmd->types[i]) == WRITE_TO_FILE)
@@ -81,6 +84,8 @@ int	ft_parent(t_cmd *cmd)
 {
 	ft_close_pipe_in_parent(cmd);
 	ft_return_default_stdio();
+	if (cmd->here_doc >= 0)
+		close(cmd->here_doc);
 	return (SUCCESS);
 }
 
@@ -88,6 +93,9 @@ int	ft_exec(t_cmd *cmd, char *path, char **env)
 {
 	pid_t		pid;
 
+	errno = 0;
+	if (ft_do_here_doc(cmd) == ERROR)//maybe intrrupt Control-c
+		return (ERROR);
 	while (cmd)
 	{
 		if (ft_pipe_in_parent(cmd) == ERROR)
@@ -104,6 +112,6 @@ int	ft_exec(t_cmd *cmd, char *path, char **env)
 		;
 	if (errno != ECHILD && errno != EINTR)
 		return (ft_perror("wait syscall") ,ERROR);
-	printf("exit statu = %d\n", g_data.exit_status);
+	// printf("exit statu = %d\n", g_data.exit_status);
 	return (g_data.exit_status);
 }

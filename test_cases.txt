@@ -18,3 +18,9 @@ echo $?
 ------------
 sleep 120 &&  control-C
 -------------
+<<|<<51
+
+<<ok|<<lo|<<ll with contro-d c \
+
+cat >ff <<ok
+cat <<ok <ff

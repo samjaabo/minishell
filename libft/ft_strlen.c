@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/15 12:01:23 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/04 21:55:50 by samjaabo         ###   ########.fr       */
+/*   Created: 2023/04/10 20:56:26 by samjaabo          #+#    #+#             */
+/*   Updated: 2023/04/10 21:00:40 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdlib.h>
+int ft_strlen(const char *s)
+{
+	int i;
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1337
-# endif
-
-size_t	ft_strlen(const char *s);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
-char	*get_next_line(int fd);
-
-#endif
+	i = 0;
+	while (s && s[i])
+		i++;
+	return (i);
+}

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 18:23:42 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/10 15:35:43 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/10 22:15:53 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,20 @@ static void	ft_control_c(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
+	else if (g_data.status == STATUS_HERE_DOC)
+	{
+		rl_replace_line("", 0);
+		write(1, "\n", 1);
+		rl_on_new_line();
+		close(STDIN_FILENO);
+	}
 }
 
 static void	ft_control_slash(int sig)
 {
 	if (sig != SIGQUIT)
 		return ;
-	if (g_data.status == STATUS_READIND)
+	if (g_data.status == STATUS_READIND || g_data.status == STATUS_HERE_DOC)
 	{
 		rl_on_new_line();
 		rl_redisplay();

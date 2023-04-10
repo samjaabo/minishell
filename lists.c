@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:26:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/10 18:03:54 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/10 20:05:10 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ t_cmd	*ft_lstnew(int ids)
 		return (node);
 	ft_bzero(node, sizeof(t_cmd));
 	node->id = ids;
-	node->std_in = STDIN_FILENO;
-	node->std_out = STDOUT_FILENO;
+	node->here_doc = -1;
 	return (node);
 }
 

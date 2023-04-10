@@ -6,14 +6,13 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/10 17:40:10 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/10 21:33:34 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEADER_H
 # define HEADER_H
 
-# include "./get_next_line/get_next_line_bonus.h"
 # include "./libft/libft.h"
 
 # include <stdio.h>
@@ -59,6 +58,7 @@ enum e_constants {
 	PIPE=6,
 	STATUS_READIND,
 	STATUS_EXECUTING,
+	STATUS_HERE_DOC,
 };
 
 //=============<GLOBAL>===============
@@ -88,7 +88,7 @@ typedef struct s_cmd {
 	// char			*key;
 	char			**redirs;
 	char			**types;
-	int				std_in;
+	int				here_doc;
 	int				std_out;
 	int				id;
 	struct s_cmd	*next;
@@ -112,9 +112,11 @@ int		ft_pipe_in_parent(t_cmd *cmd);
 int		ft_pipe_in_child(t_cmd *cmd);
 int		ft_close_pipe_in_parent(t_cmd *cmd);
 
+//=============here_doc.c===============
+int		ft_do_here_doc(t_cmd *cmd);
+
 //=============redirection.c===============
 int		ft_file_to_stdin(char *file);
-int		ft_here_doc(char *limiter);
 int		ft_write_append(char *file);
 int		ft_write_truncate(char *file);
 
