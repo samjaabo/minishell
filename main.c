@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:56:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/10 15:24:31 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/11 18:30:27 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ int main(int i, char **v)
     while (1)
     {
 		g_data.status = STATUS_READIND;
+		// if (read(0, 0, 0) < 0)
+		// {
+		// 	ft_perror("can't read from STDIN");
+		// 	break ;
+		// }
 		line = prompt(g_data.exit_status, g_data.succ_str, g_data.fail_str);
 		g_data.status = STATUS_EXECUTING;
 		if (!ft_strncmp(line, "exit", 5))

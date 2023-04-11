@@ -2,6 +2,9 @@ export var'='
 export var=
 export var
 
+./minishell <file
+./bash <file
+
 cat | ls
 <<ok <<ok | <<ok | <<ok
 ''

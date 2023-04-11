@@ -6,28 +6,57 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 19:45:04 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/10 22:10:17 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/11 18:49:18 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+char	*ft_read(void)
+{
+	char	*s;
+	char	*tmp;
+	char	*buf;
+	int		d;
+
+	errno = 0;
+    s = ft_calloc(1, sizeof(char));
+	buf = ft_calloc(2, sizeof(char));
+	if (!buf || !s)
+		return (free(s), ft_perror("malloc"), NULL);
+	write(1, "\e[1;97mheredoc>\e[0m ", 21);
+	while (buf[0] != '\n' && !g_data.here_doc_control_c)
+	{
+		d = read(STDIN_FILENO, buf, 1);
+		if (d < 0)
+			return (free(s), free(buf), NULL);
+		if (d == 0 && s[0] == 0)
+			return (free(s), free(buf), write(1, "\n", 1), NULL);
+		tmp = ft_strjoin3(s, buf, NULL);
+		free(s);
+		s = tmp;
+		if (!tmp)
+			return (free(buf), ft_perror("malloc"), NULL);
+	}
+	return (free(buf), s);
+}
 
 static int	ft_here_doc(char *limiter)
 {
 	char	*buff;
 	int		fds[2];
 
-	if (read(0, 0, 0) < 0)
-		return (ERROR);//control-c interrupt
 	if (pipe(fds) < 0)
 		return (ERROR);
-	while (TRUE)
+	while (!g_data.here_doc_control_c)
 	{
-		buff = readline("\e[1;97mheredoc>\e[0m ");
-		if (!buff)
+		buff = ft_read();
+		if (!buff && errno == 0)
 			break ;
-		// printf("-->%s\n" , buff);
-		if (!ft_strncmp(buff, limiter, ft_strlen(limiter) + 1))
+		if (!buff && errno != 0)
+			return (close(fds[0]), close(fds[1]), ERROR);
+		if (!ft_strncmp(buff, limiter, ft_strlen(limiter))
+				&& buff[ft_strlen(limiter)] == '\n')
 		{
 			free(buff);
 			break ;
@@ -36,16 +65,14 @@ static int	ft_here_doc(char *limiter)
 		write(fds[1], "\n", 1);
 		free(buff);
 	}
-	if (close(fds[1]) < 0)
-		return (ERROR);
-	if (read(0, 0, 0) < 0)
-		return (close(fds[0]), -1);
-	return (fds[0]);
+	if (g_data.here_doc_control_c)
+		return (close(fds[0]), close(fds[1]), -1);
+	return (close(fds[1]), fds[0]);
 }
 
 static int	ft_here_doc_on_control_c(t_cmd *cmd)
 {
-	if (read(0, 0, 0) == 0)
+	if (!g_data.here_doc_control_c)
 		return (SUCCESS);
 	while (cmd)
 	{
@@ -53,10 +80,8 @@ static int	ft_here_doc_on_control_c(t_cmd *cmd)
 			close(cmd->here_doc);
 		cmd = cmd->next;
 	}
-	if (dup2(g_data.new_stdin, STDIN_FILENO) < 0)
-		return (ft_perror("dup2 hel1223o syscall") ,ERROR);
 	g_data.status = STATUS_READIND;
-	return (ERROR);
+	return (SUCCESS);
 }
 
 int	ft_do_here_doc(t_cmd *cmd)
@@ -66,15 +91,19 @@ int	ft_do_here_doc(t_cmd *cmd)
 	t_cmd	*tmp;
 
 	g_data.status = STATUS_HERE_DOC;
+	g_data.here_doc_control_c = FALSE;
 	tmp = cmd;
-	while (cmd)
+	while (cmd && !g_data.here_doc_control_c)
 	{
 		i = 0;
 		fd = -1;
-		while (cmd->redirs && cmd->redirs[i])
+		while (cmd->redirs && cmd->redirs[i] && !g_data.here_doc_control_c)
 		{
 			if (ft_atoi(cmd->types[i]) == HERE_DOCUMENT)
+			{
+				close(fd);
 				fd = ft_here_doc(cmd->redirs[i]);
+			}
 			++i;
 		}
 		cmd->here_doc = fd;

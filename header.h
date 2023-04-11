@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/10 21:33:34 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/11 17:47:26 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_data {
 	int				pipe_in;
 	int				pipe_out;
 	int				*here_doc;
+	volatile int	here_doc_control_c;
 	char			*succ_str;
 	char			*fail_str;
 }	t_data;

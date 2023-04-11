@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 18:23:42 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/10 22:15:53 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/11 22:21:56 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ static void	ft_control_c(int sig)
 	}
 	else if (g_data.status == STATUS_HERE_DOC)
 	{
-		rl_replace_line("", 0);
+		g_data.here_doc_control_c = TRUE;
 		write(1, "\n", 1);
-		rl_on_new_line();
 		close(STDIN_FILENO);
 	}
 }
@@ -48,8 +47,9 @@ static void	ft_control_slash(int sig)
 void	ft_control_d(void)
 {
 	rl_clear_history();
+	//rl_replace_line("", 0);
     rl_on_new_line();
-    rl_redisplay();
+    //rl_redisplay();
 	write(1, "exit\n", 5);
 	ft_exit();
 }

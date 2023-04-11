@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/10 21:58:16 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/11 18:55:35 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,12 @@ int	ft_exec(t_cmd *cmd, char *path, char **env)
 	pid_t		pid;
 
 	errno = 0;
-	if (ft_do_here_doc(cmd) == ERROR)//maybe intrrupt Control-c
-		return (ERROR);
+	if (ft_do_here_doc(cmd) == ERROR || g_data.here_doc_control_c)//check for intrrupt Control-c
+	{
+		dup2(g_data.new_stdin, STDIN_FILENO);
+		g_data.here_doc_control_c = FALSE;
+		return (SUCCESS);
+	}
 	while (cmd)
 	{
 		if (ft_pipe_in_parent(cmd) == ERROR)
@@ -112,6 +116,5 @@ int	ft_exec(t_cmd *cmd, char *path, char **env)
 		;
 	if (errno != ECHILD && errno != EINTR)
 		return (ft_perror("wait syscall") ,ERROR);
-	// printf("exit statu = %d\n", g_data.exit_status);
 	return (g_data.exit_status);
 }
