@@ -27,3 +27,5 @@ sleep 120 &&  control-C
 
 cat >ff <<ok
 cat <<ok <ff
+
+cat <<k<<k'

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 18:23:42 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/11 22:21:56 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/12 00:11:26 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	ft_control_slash(int sig)
 {
 	if (sig != SIGQUIT)
 		return ;
-	if (g_data.status == STATUS_READIND || g_data.status == STATUS_HERE_DOC)
+	if (g_data.status == STATUS_READIND)
 	{
 		rl_on_new_line();
 		rl_redisplay();

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 19:45:04 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/11 18:49:18 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/12 11:52:32 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static int	ft_here_doc(char *limiter)
 	while (!g_data.here_doc_control_c)
 	{
 		buff = ft_read();
+		//printf("%s", buff);
 		if (!buff && errno == 0)
 			break ;
 		if (!buff && errno != 0)
@@ -62,7 +63,7 @@ static int	ft_here_doc(char *limiter)
 			break ;
 		}
 		write(fds[1], buff, ft_strlen(buff));
-		write(fds[1], "\n", 1);
+		//write(fds[1], "\n", 1);
 		free(buff);
 	}
 	if (g_data.here_doc_control_c)
@@ -86,7 +87,6 @@ static int	ft_here_doc_on_control_c(t_cmd *cmd)
 
 int	ft_do_here_doc(t_cmd *cmd)
 {
-	int	fd;
 	int	i;
 	t_cmd	*tmp;
 
@@ -96,17 +96,15 @@ int	ft_do_here_doc(t_cmd *cmd)
 	while (cmd && !g_data.here_doc_control_c)
 	{
 		i = 0;
-		fd = -1;
 		while (cmd->redirs && cmd->redirs[i] && !g_data.here_doc_control_c)
 		{
 			if (ft_atoi(cmd->types[i]) == HERE_DOCUMENT)
 			{
-				close(fd);
-				fd = ft_here_doc(cmd->redirs[i]);
+				close(cmd->here_doc);
+				cmd->here_doc = ft_here_doc(cmd->redirs[i]);
 			}
 			++i;
 		}
-		cmd->here_doc = fd;
 		cmd = cmd->next;
 	}
 	g_data.status = STATUS_EXECUTING;

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/11 18:55:35 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/12 12:29:44 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ static int	ft_redirection(t_cmd *cmd)
 	i = 0;
 	while (cmd && cmd->redirs && cmd->redirs[i] && ret != ERROR)
 	{
-		if (ft_atoi(cmd->types[i]) == HERE_DOCUMENT)
+		if (ft_atoi(cmd->types[i]) == HERE_DOCUMENT && cmd->here_doc != -1)
 		{
 			ret = dup2(cmd->here_doc, STDIN_FILENO);
 			ret = close(cmd->here_doc);
+			cmd->here_doc = -1;
 		}
 		else if (ft_atoi(cmd->types[i]) == FILE_TO_STDIN)
 			ret = ft_file_to_stdin(cmd->redirs[i]);
@@ -53,6 +54,15 @@ static int	ft_redirection(t_cmd *cmd)
 		++i;
 	}
 	return (ret);
+}
+
+void ft_lsof(void)
+{
+	char id[55]="lsof -p ";
+
+	sprintf(id+8, "%d",getpid());
+	printf("%s\n", id);
+	system(id);
 }
 
 static int	ft_child(t_cmd *cmd, char *path, char **env)
@@ -72,6 +82,7 @@ static int	ft_child(t_cmd *cmd, char *path, char **env)
 	if (ft_redirection(cmd) == ERROR)
 		return (ERROR);
 	ft_child_close_fds_copy();
+	//ft_lsof();
 	if (cmd->args)
 	{
 		execve(cmd->args[0], cmd->args, env);
