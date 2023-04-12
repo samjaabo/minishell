@@ -6,12 +6,13 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:56:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/11 18:30:27 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:22:25 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
+t_data	g_data;
 
 int main(int i, char **v)
 {

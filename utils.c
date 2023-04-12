@@ -6,11 +6,13 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:06:54 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/11 22:25:12 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:25:08 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "header.h"
+
+extern t_data g_data;
 
 void ft_printar(char **t)
 {

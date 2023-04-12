@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/11 17:47:26 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:31:41 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,11 @@ typedef struct s_data {
 	int				pipe_in;
 	int				pipe_out;
 	int				*here_doc;
+	volatile int	control;
 	volatile int	here_doc_control_c;
 	char			*succ_str;
 	char			*fail_str;
 }	t_data;
-
-t_data	g_data;
 //===================================
 
 //===================================
@@ -145,6 +144,7 @@ t_cmd	*ft_translate(t_list *list);
 //=============signals.c.c===============
 void	ft_control_d(void);
 int		ft_signals(void);
+void	ft_control_slash(int sig);
 //////tmp
 t_cmd	*body(char *line);
 

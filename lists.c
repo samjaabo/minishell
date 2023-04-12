@@ -6,12 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:26:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/10 20:05:10 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:23:49 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
 
 t_cmd	*ft_lstnew(int ids)
 {

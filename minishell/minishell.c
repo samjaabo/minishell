@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:06:40 by byoussef          #+#    #+#             */
-/*   Updated: 2023/04/10 14:26:09 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/12 15:41:36 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,14 @@ char	*prompt(int exit_status, char *succ, char *fail)
     static char	*line = NULL;
 	char		*s;
 
-	//free(line);
 	if (exit_status != 0)
 		line = readline(fail);
 	else
 		line = readline(succ);
 	if (!line)
 		ft_control_d();
-	//printf("%s\n", line);
-	//line = readline("/samjaabo/files$ ");
-	if (line)
+	if (line && line[0])
 		add_history(line);
-	
 	s = remove_additional_spaces(line);
     return (s);
 }

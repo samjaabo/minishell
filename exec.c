@@ -6,11 +6,13 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/12 12:29:44 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:32:30 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+extern t_data g_data;
 
 void	ft_child_close_fds_copy(void)
 {
@@ -69,6 +71,7 @@ static int	ft_child(t_cmd *cmd, char *path, char **env)
 {
 	char	*s;
 
+	signal(SIGQUIT, ft_control_slash);
 	if (cmd->args)
 	{
 		s = ft_get_cmd_path(path, cmd->args[0]);
@@ -105,6 +108,7 @@ int	ft_exec(t_cmd *cmd, char *path, char **env)
 	pid_t		pid;
 
 	errno = 0;
+	g_data.control = 0;
 	if (ft_do_here_doc(cmd) == ERROR || g_data.here_doc_control_c)//check for intrrupt Control-c
 	{
 		dup2(g_data.new_stdin, STDIN_FILENO);
