@@ -31,3 +31,7 @@ cat <<ok <ff
 cat <<k<<k'
 
 sleep 1000 && control-\
+
+echo -n -n -n -n -n -n -n -n -n -n hello world -n -n
+echo -n
+echo
