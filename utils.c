@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:06:54 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/12 16:25:08 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/13 22:46:38 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,29 +88,38 @@ static int	ft_dup_default_stdio(void)
 	return (SUCCESS);
 }
 
-void	ft_init(void)
+void	ft_init(char **env)
 {
-	char	*path;
-
-	path = getcwd(NULL, 0);
-	if (!path)
-	{
-		ft_perror("malloc");
+	if (ft_copy_env(env) != SUCCESS)
 		exit(1);
-	}
-	g_data.fail_str = ft_strjoin3("\e[1;91m\u2794\e[0m \e[1;94m", ft_strrchr(path, '/'), "\e[0m ");
-	g_data.succ_str = ft_strjoin3("\e[1;32m\u2794\e[0m \e[1;94m", ft_strrchr(path, '/'), "\e[0m ");
-	free(path);
-	if (!g_data.succ_str || !g_data.fail_str)
-	{
-		free(g_data.fail_str);
-		free(g_data.succ_str);
-		ft_perror("malloc");
-		exit(1);
-	}
+	ft_update_prompt_string();
 	g_data.here_doc = NULL;
 	system("clear");
 	ft_dup_default_stdio();
+}
+
+void	ft_update_prompt_string(void)
+{
+	char	*path;
+	char	*succ;
+	char	*fail;
+
+	path = getcwd(NULL, 0);
+	if (!path)
+		path = ft_strdup("minishell: ");
+	fail = ft_strjoin3("\e[1;91m\u2794\e[0m \e[1;94m", ft_strrchr(path, '/'), "\e[0m ");
+	succ = ft_strjoin3("\e[1;32m\u2794\e[0m \e[1;94m", ft_strrchr(path, '/'), "\e[0m ");
+	free(g_data.succ_str);
+	free(g_data.fail_str);
+	free(path);
+	g_data.succ_str = succ;
+	g_data.fail_str = fail;
+	if (!succ || !fail || !path)
+	{
+		g_data.fail_str = NULL;
+		g_data.succ_str = NULL;
+		ft_perror("malloc");
+	}
 }
 
 void	ft_exit(void)
@@ -123,39 +132,76 @@ void	ft_exit(void)
 	exit(g_data.exit_status);
 }
 
-int	ft_realloc_fd(int new)
-{
-	int		count;
-	int		*ints;
-	int		*arcpy;
-	int		*cpy;
+// int	ft_realloc_fd(int new)
+// {
+// 	int		count;
+// 	int		*ints;
+// 	int		*arcpy;
+// 	int		*cpy;
 
-	count = 0;
-	while (g_data.here_doc && g_data.here_doc[count] != -1)
-		count++;
-	ints = ft_calloc((count + 2), sizeof(int));
-	if (!ints)
-		return (free(g_data.here_doc), ft_perror("malloc"), ERROR);
-	cpy = ints;
-	arcpy = g_data.here_doc;
-	while (g_data.here_doc && *g_data.here_doc != -1)
-		*ints++ = *g_data.here_doc++;
-	*ints++ = new;
-	*ints = -1;
-	free(arcpy);
-	return (SUCCESS);
-}
+// 	count = 0;
+// 	while (g_data.here_doc && g_data.here_doc[count] != -1)
+// 		count++;
+// 	ints = ft_calloc((count + 2), sizeof(int));
+// 	if (!ints)
+// 		return (free(g_data.here_doc), ft_perror("malloc"), ERROR);
+// 	cpy = ints;
+// 	arcpy = g_data.here_doc;
+// 	while (g_data.here_doc && *g_data.here_doc != -1)
+// 		*ints++ = *g_data.here_doc++;
+// 	*ints++ = new;
+// 	*ints = -1;
+// 	free(arcpy);
+// 	return (SUCCESS);
+// }
 
-int	ft_close_fds(void)
+// int	ft_close_fds(void)
+// {
+// 	int	i;
+// 	int ret;
+
+// 	i = 0;
+// 	ret = SUCCESS;
+// 	while (g_data.here_doc[i] != -1)
+// 		ret = close(g_data.here_doc[i++]);
+// 	free(g_data.here_doc);
+// 	g_data.here_doc = NULL;
+// 	return (ret);
+// }
+
+// int    main(int ac, char **av, char **env)
+// {
+//     char **envy;
+//     int i = 0;
+//     char *s;
+
+//     while (env[i])
+//         i++;
+//     envy = malloc((i + 1) * sizeof(char *));
+//     int j = 0;
+//     while (env[j])
+//     {
+//         s = ft_strdup(env[j]);
+//         envy[j] = s;
+//         j++;
+//     }
+//     envy[j + 1] = 0;
+
+// }
+
+int	ft_copy_env(char **env)
 {
-	int	i;
-	int ret;
+	int		i;
+	char	**arr;
 
 	i = 0;
-	ret = SUCCESS;
-	while (g_data.here_doc[i] != -1)
-		ret = close(g_data.here_doc[i++]);
-	free(g_data.here_doc);
-	g_data.here_doc = NULL;
-	return (ret);
+	while (env[i])
+	{
+		arr = ft_realloc(g_data.env, ft_strdup(env[i]));
+		if (!arr)
+			return (ft_clear(g_data.env), g_data.env = NULL, ERROR);
+		g_data.env = arr;
+		++i;
+	}
+	return (SUCCESS);
 }

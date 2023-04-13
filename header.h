@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/12 16:31:41 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/13 22:46:44 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ enum e_constants {
 	STATUS_READIND,
 	STATUS_EXECUTING,
 	STATUS_HERE_DOC,
+	IS_BUILTIN,
 };
 
 //=============<GLOBAL>===============
@@ -79,7 +80,6 @@ typedef struct s_data {
 	char			*fail_str;
 }	t_data;
 //===================================
-
 //===================================
 //=============lists.c===============
 typedef struct s_cmd {
@@ -125,14 +125,15 @@ char	**ft_mysplit(const char *str, char c);
 char	**ft_realloc(char **array, char *new);
 
 //=============utils.c===============
-void	ft_init(void);
+void	ft_init(char **env);
 void	ft_exit(void);
 int		ft_realloc_fd(int new);
-int		ft_close_fds(void);
+int		ft_copy_env(char **env);
 void 	ft_printar(char **t);
 void	ft_perror(const char *msg);
 void	ft_error(const char *cmd, const char *msg);
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
+void	ft_update_prompt_string(void);
 
 //=============cmd_path.c===============
 char	*ft_get_cmd_path(const char *path, const char *cmd);
@@ -145,6 +146,19 @@ t_cmd	*ft_translate(t_list *list);
 void	ft_control_d(void);
 int		ft_signals(void);
 void	ft_control_slash(int sig);
+
+//=============builtins.c===============
+void	ft_export(char **args);
+void	ft_unset(char **args);
+int		ft_isnot_valid_identifier(char *str, char stop);
+char	**ft_realloc_env(int ignore);
+int		ft_getenv(char *var);
+void	ft_echo(char **args);
+void	ft_env();
+void	ft_pwd(void);
+void	ft_cd(char *s);
+int		ft_builtins(t_cmd *cmd);
+
 //////tmp
 t_cmd	*body(char *line);
 

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:56:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/12 16:22:25 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/13 22:48:38 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 t_data	g_data;
 
-int main(int i, char **v)
+int main(int argc, char **argv, char **env)
 {
     char	*line;
 	t_cmd  *cmd;
 
-	(void)v;
-	(void)i;
-	ft_init();
+	(void)argc;
+	(void)argv;
+	ft_init(env);
 	if (ft_signals() < 0)
 		return (1);
     while (1)
@@ -32,7 +32,10 @@ int main(int i, char **v)
 		// 	ft_perror("can't read from STDIN");
 		// 	break ;
 		// }
-		line = prompt(g_data.exit_status, g_data.succ_str, g_data.fail_str);
+		if (g_data.succ_str && g_data.fail_str)
+			line = prompt(g_data.exit_status, g_data.succ_str, g_data.fail_str);
+		else
+			line = prompt(g_data.exit_status, "minshell: ", "minshell: ");
 		g_data.status = STATUS_EXECUTING;
 		if (!ft_strncmp(line, "exit", 5))
 			ft_exit();

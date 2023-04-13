@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 18:23:42 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/12 16:40:16 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/13 22:59:28 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ static void	ft_control_c(int sig)
 	if (g_data.status == STATUS_READIND)
 	{
 		rl_replace_line("", 0);
-		if (g_data.control == 0)
-		{
-			rl_on_new_line();
-			rl_redisplay();
-			write(1, "\n", 1);
-		}
+		// if (g_data.control == 100)
+		// {
+		// 	rl_on_new_line();
+		// 	rl_redisplay();
+		// }
+		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
 	}
 	else if (g_data.status == STATUS_HERE_DOC)
 	{
 		g_data.here_doc_control_c = TRUE;
-		g_data.control = 1;
+		// g_data.control = 1;
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		close(0);

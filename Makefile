@@ -6,7 +6,7 @@
 #    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/12 13:37:38 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/13 18:50:50 by samjaabo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ MAIN_SRC = signals.c main.c lists.c exec.c redirection.c split.c utils.c \
 			cmd_path.c translate.c minishell/minishell.c minishell/utils.c minishell/utils2.c \
 			minishell/tokenizer.c minishell/tokenizer_utils.c minishell/syntax.c minishell/ft_strjoin.c \
 			minishell/ft_memcpy.c minishell/quotes.c minishell/finals_maker.c \
-			pipe.c here_doc.c
+			pipe.c here_doc.c \
+			builtin_cd.c builtin_echo.c builtin_env.c builtin_export.c builtin_pwd.c builtin_unset.c
 			
 MAIN_OBJS = $(MAIN_SRC:.c=.o)
 # directory variables

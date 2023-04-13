@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 17:51:46 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/02 12:33:53 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/13 22:43:36 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ char	**ft_realloc(char **array, char *new)
 	char	**cpy;
 
 	if (!new)
-		return (NULL);
+		return (ft_perror("malloc"), NULL);
 	count = 0;
 	while (array && array[count])
 		count++;
 	strs = malloc((count + 2) * sizeof(char *));
 	if (!strs)
-		return (NULL);
+		return (ft_perror("malloc"), NULL);
 	cpy = strs;
 	arcpy = array;
 	while (array && *array)

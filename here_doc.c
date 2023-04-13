@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 19:45:04 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/12 16:25:27 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/13 23:03:25 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ static int	ft_here_doc(char *limiter)
 	{
 		buff = readline("heredoc> ");
 		if (!buff)
+		{
+			if (!g_data.here_doc_control_c)
+				write(1, "\n", 1);
 			break ;
+		}
 		if (!ft_strncmp(buff, limiter, ft_strlen(limiter)))
 		{
 			free(buff);

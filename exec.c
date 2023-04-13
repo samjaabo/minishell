@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/12 16:32:30 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/13 22:52:12 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static int	ft_child(t_cmd *cmd, char *path, char **env)
 	//ft_lsof();
 	if (cmd->args)
 	{
-		execve(cmd->args[0], cmd->args, env);
+		execve(cmd->args[0], cmd->args, g_data.env);
 		return (ft_perror(cmd->args[0]), ERROR);
 	}
 	return (SUCCESS);
@@ -115,11 +115,13 @@ int	ft_exec(t_cmd *cmd, char *path, char **env)
 		g_data.here_doc_control_c = FALSE;
 		return (SUCCESS);
 	}
+	pid = 1;
 	while (cmd)
 	{
 		if (ft_pipe_in_parent(cmd) == ERROR)
 			return(ERROR);
-		pid = fork();
+		if (ft_builtins(cmd) != IS_BUILTIN)
+			pid = fork();
 		if (pid < 0)
 			return (ft_perror("fork syscall"), ERROR);
 		if (pid == 0)
