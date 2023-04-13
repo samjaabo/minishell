@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 18:23:42 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/13 22:59:28 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/13 23:20:10 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,12 @@ static void	ft_control_c(int sig)
 		close(0);
 	}
 	else if (g_data.status == STATUS_EXECUTING)
-		write(1, "\n", 1);
+	{
+		errno = 0;
+		while (errno != ECHILD)
+			wait(NULL);
+		//write(1, "\n", 1);
+	}
 }
 
 void	ft_control_slash(int sig)
