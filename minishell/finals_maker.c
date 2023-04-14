@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   finals_maker.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: byoussef <byoussef@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 00:07:54 by byoussef          #+#    #+#             */
-/*   Updated: 2023/04/04 17:12:14 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/14 00:16:36 by byoussef         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	finals_m(t_token_list	*tokens, t_token_list	**finals)
 	if (tokens->type == PIPE)
 	{	if(c)
 			addback(finals, c, WORD);
-		addback(finals, tokens->value, tokens->type);
+		write(1, "parse error\n", ft_strlen("parse error\n"));
+		ft_lstclear(finals);
 	}
-	// free(c);
 }

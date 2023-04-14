@@ -3,18 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
+#    By: byoussef <byoussef@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/13 18:50:50 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/14 00:12:21 by byoussef         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = program.a
 CC = cc
-CFLAGS = -Wall -Wextra #-fsanitize=address
-export LDFLAGS="-L/Users/samjaabo/.brew/opt/readline/lib"
-  export CPPFLAGS="-I/Users/samjaabo/.brew/opt/readline/include"
+CFLAGS = -Wall -Wextra -fsanitize=address
+
 MAIN_SRC = signals.c main.c lists.c exec.c redirection.c split.c utils.c \
 			cmd_path.c translate.c minishell/minishell.c minishell/utils.c minishell/utils2.c \
 			minishell/tokenizer.c minishell/tokenizer_utils.c minishell/syntax.c minishell/ft_strjoin.c \
@@ -57,13 +56,13 @@ $(NAME): $(LIBFT_OBJS) $(MAIN_OBJS)
 	@ar rc $(NAME) $(LIBFT_OBJS) $(GET_NEXT_LINE_OBJS) $(MAIN_OBJS)
 
 %.o: %.c header.h ./libft/libft.h
-	@$(CC) -I/Users/samjaabo/.brew/opt/readline/include $(CFLAGS) -c $< -o $@
+	@$(CC) -I/Users/byoussef/local/include $(CFLAGS) -c $< -o $@
 
 run:
 	@#@clear
-	@$(CC) -L/Users/samjaabo/.brew/opt/readline/lib -lreadline $(CFLAGS) $(NAME) -o  ./tmp/program
+	@$(CC) -L/Users/byoussef/local/lib -lreadline $(CFLAGS) $(NAME) -o  program
 	@$(MAKE) fclean
 	@#cd tmp
-	@#./program
+	@./program
 	@#cd ../
 	
