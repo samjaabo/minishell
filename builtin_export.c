@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:33:39 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/13 18:55:22 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/14 17:55:02 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,18 @@ static void	ft_error_not_valid(char *str)
 void	ft_empty_export(char **args)
 {
 	int i;
+	char *s;
 
 	if (!args || !args[0] || args[1])
 		return ;
 	i = 0;
 	while (g_data.env && g_data.env[i])
 	{
-		printf("declare -x %s\n", g_data.env[i]);
+		s = ft_strchr(g_data.env[i], '=');
+		if (s && s[1] == 0)
+			printf("export %s\"\"\n", g_data.env[i]);
+		else
+			printf("export %s\n", g_data.env[i]);
 		++i;
 	}
 	g_data.exit_status = 0;
@@ -58,7 +63,7 @@ int	ft_isnot_valid_identifier(char *str, char stop)
 	return (SUCCESS);
 }
 
-void	ft_export(char **args)
+void	ft_export(char **args)//recall malloc on args
 {
 	int		i;
 	char	c;

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 18:23:42 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/13 23:20:10 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/14 17:46:31 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,11 @@ static void	ft_control_c(int sig)
 	}
 	else if (g_data.status == STATUS_EXECUTING)
 	{
-		errno = 0;
-		while (errno != ECHILD)
-			wait(NULL);
+		// errno = 0;
+		// while (errno != ECHILD)
+		// 	wait(NULL);
 		//write(1, "\n", 1);
+		//PASS-IGNORE
 	}
 }
 
@@ -63,7 +64,7 @@ void	ft_control_d(void)
 	rl_clear_history();
     // rl_on_new_line();
     // rl_redisplay();
-	write(1, "exit\n", 5);
+	write(1, "exit\n", 6);
 	ft_exit();
 }
 

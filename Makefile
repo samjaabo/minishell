@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: byoussef <byoussef@student.42.fr>          +#+  +:+       +#+         #
+#    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/14 00:12:21 by byoussef         ###   ########.fr        #
+#    Updated: 2023/04/14 17:48:41 by samjaabo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = program.a
 CC = cc
-CFLAGS = -Wall -Wextra -fsanitize=address
+CFLAGS = -Wall -Wextra #-fsanitize=address
 
 MAIN_SRC = signals.c main.c lists.c exec.c redirection.c split.c utils.c \
 			cmd_path.c translate.c minishell/minishell.c minishell/utils.c minishell/utils2.c \
@@ -42,6 +42,14 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR),$(LIBFT_FILES))
 # object files variables
 LIBFT_OBJS =	$(LIBFT_SRCS:%.c=%.o)
 
+ifeq ($(shell whoami),samjaabo)
+INCLUDE_PATH = -I/Users/samjaabo/.brew/opt/readline/include
+READLINE_PATH = -L/Users/samjaabo/.brew/opt/readline/lib
+else
+INCLUDE_PATH = -I/Users/byoussef/local/include
+READLINE_PATH = -L/Users/byoussef/local/lib
+endif
+
 all: $(NAME) run
 
 clean:
@@ -56,11 +64,11 @@ $(NAME): $(LIBFT_OBJS) $(MAIN_OBJS)
 	@ar rc $(NAME) $(LIBFT_OBJS) $(GET_NEXT_LINE_OBJS) $(MAIN_OBJS)
 
 %.o: %.c header.h ./libft/libft.h
-	@$(CC) -I/Users/byoussef/local/include $(CFLAGS) -c $< -o $@
+	@$(CC) $(INCLUDE_PATH) $(CFLAGS) -c $< -o $@
 
 run:
 	@#@clear
-	@$(CC) -L/Users/byoussef/local/lib -lreadline $(CFLAGS) $(NAME) -o  program
+	@$(CC) $(READLINE_PATH) -lreadline $(CFLAGS) $(NAME) -o  program
 	@$(MAKE) fclean
 	@#cd tmp
 	@./program

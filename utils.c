@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:06:54 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/14 13:49:59 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:39:49 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	ft_perror(const char *msg)
 		return ;
 	write(2, "minishell: ", 12);
 	perror(msg);
+	errno = 0;
 }
 
 void	ft_error(const char *cmd, const char *msg)
@@ -93,8 +94,9 @@ void	ft_init(char **env)
 	if (ft_copy_env(env) != SUCCESS)
 		exit(1);
 	ft_update_prompt_string();
-	g_data.here_doc = NULL;
+	//g_data.here_doc = NULL;
 	system("clear");
+	ft_cd("tmp");
 	ft_dup_default_stdio();
 }
 

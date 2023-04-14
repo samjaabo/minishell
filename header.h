@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/13 22:46:44 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:33:36 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ typedef struct s_data {
 	int				pipe_old;
 	int				pipe_in;
 	int				pipe_out;
-	int				*here_doc;
-	volatile int	control;
+	//volatile int	control;
+	//int				is_builtin;
 	volatile int	here_doc_control_c;
 	char			*succ_str;
 	char			*fail_str;
@@ -103,7 +103,7 @@ void	ft_printcmd(t_cmd *head);
 //====================================
 
 //=============exec.c===============
-
+int		ft_redirection(t_cmd *cmd);
 int		ft_exec(t_cmd *cmd, char *path, char **env);
 int		ft_return_default_stdio(void);
 
@@ -154,10 +154,11 @@ int		ft_isnot_valid_identifier(char *str, char stop);
 char	**ft_realloc_env(int ignore);
 int		ft_getenv(char *var);
 void	ft_echo(char **args);
-void	ft_env();
+void	ft_env(char **args);
 void	ft_pwd(void);
 void	ft_cd(char *s);
 int		ft_builtins(t_cmd *cmd);
+int		ft_is_builtin(t_cmd *cmd);
 
 //////tmp
 t_cmd	*body(char *line);

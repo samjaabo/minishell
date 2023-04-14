@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:26:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/12 16:23:49 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/14 17:59:12 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@ t_cmd	*ft_lstnew(int ids)
 {
 	t_cmd		*node;
 
-	node = malloc(sizeof(t_cmd));
+	node = ft_calloc(1, sizeof(t_cmd));
 	if (!node)
 		return (node);
-	ft_bzero(node, sizeof(t_cmd));
 	node->id = ids;
 	node->here_doc = -1;
 	return (node);
@@ -71,21 +70,21 @@ void	ftx_lstclear(t_cmd **head)
 	*head = NULL;
 }
 
-void	ft_printcmd(t_cmd *head)
-{
-	int i;
+// void	ft_printcmd(t_cmd *head)
+// {
+// 	int i;
 
-	while (head)
-	{
-		i = 0;
-		printf("========================\ncommand: ");
-		while (head->args && head->args[i])
-			printf("%s | ", head->args[i++]);
-		i = 0;
-		printf("========================\nredirections: ");
-		while (head->redirs && head->redirs[i])
-			printf("(%s %d)| ", head->redirs[i], ft_atoi(head->types[i])),++i;
-		printf("\n");
-		head = head->next;
-	}
-}
+// 	while (head)
+// 	{
+// 		i = 0;
+// 		printf("========================\ncommand: ");
+// 		while (head->args && head->args[i])
+// 			printf("%s | ", head->args[i++]);
+// 		i = 0;
+// 		printf("========================\nredirections: ");
+// 		while (head->redirs && head->redirs[i])
+// 			printf("(%s %d)| ", head->redirs[i], ft_atoi(head->types[i])),++i;
+// 		printf("\n");
+// 		head = head->next;
+// 	}
+// }

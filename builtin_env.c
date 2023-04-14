@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:45:55 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/13 20:01:29 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/14 18:03:50 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 extern t_data	g_data;
 
-void	ft_env()
+void	ft_env(char **args)
 {
 	int i;
 
+	if (args[1])
+		return (ft_error("env", "takes no argument"));
 	i = 0;
 	while (g_data.env && g_data.env[i])
 	{
@@ -28,24 +30,51 @@ void	ft_env()
 	g_data.exit_status = 0;
 }
 
-int	ft_builtins(t_cmd *cmd)
+int	ft_is_builtin(t_cmd *cmd)
 {
 	if (!cmd || !cmd->args || !cmd->args[0])
-		return (SUCCESS);
+		return (FALSE);
+	if (!ft_strncmp(cmd->args[0], "cd", 3))
+		return (TRUE);
+	else if (!ft_strncmp(cmd->args[0], "echo", 5))
+		return (TRUE);
+	else if (!ft_strncmp(cmd->args[0], "env", 4))
+		return (TRUE);
+	else if (!ft_strncmp(cmd->args[0], "export", 7))
+		return (TRUE);
+	else if (!ft_strncmp(cmd->args[0], "pwd", 4))
+		return (TRUE);
+	else if (!ft_strncmp(cmd->args[0], "unset", 6))
+		return (TRUE);
+	return (FALSE);
+}
+
+static void	ft_exec_builtins(t_cmd *cmd)
+{
 	if (!ft_strncmp(cmd->args[0], "cd", 3))
 		ft_cd(cmd->args[1]);
 	else if (!ft_strncmp(cmd->args[0], "echo", 5))
 		ft_echo(cmd->args);
 	else if (!ft_strncmp(cmd->args[0], "env", 4))
-		ft_env();
+		ft_env(cmd->args);
 	else if (!ft_strncmp(cmd->args[0], "export", 7))
 		ft_export(cmd->args);
 	else if (!ft_strncmp(cmd->args[0], "pwd", 4))
 		ft_pwd();
 	else if (!ft_strncmp(cmd->args[0], "unset", 6))
 		ft_unset(cmd->args);
-	else
+}
+
+int	ft_builtins(t_cmd *cmd)
+{
+	if (!ft_is_builtin(cmd))
 		return (SUCCESS);
-	printf("BUILTIN\n");
-	return (IS_BUILTIN);
+	if (ft_pipe_in_child(cmd) == ERROR)
+		return (ERROR);
+	if (ft_close_pipe_in_parent(cmd) == ERROR)
+		return (ERROR);
+	if (ft_redirection(cmd) == ERROR)
+		return (ERROR);
+	ft_exec_builtins(cmd);
+	return (SUCCESS);
 }

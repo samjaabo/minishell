@@ -37,3 +37,6 @@ echo -n
 echo
 
 "ECHO LS" and "echo ls" are the same
+
+env
+HOME="" when it is empty

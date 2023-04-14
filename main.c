@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:56:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/14 13:49:39 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/14 14:04:29 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int main(int argc, char **argv, char **env)
 	ft_init(env);
 	if (ft_signals() < 0)
 		return (1);
-    while (1)
+    while (TRUE)
     {
 		g_data.status = STATUS_READIND;
 		// if (read(0, 0, 0) < 0)
