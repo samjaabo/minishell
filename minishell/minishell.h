@@ -24,7 +24,23 @@ typedef struct line
 	struct line		*next;
 }					t_token_list;
 
-
+typedef struct s_data {
+	char			**env;
+	int				status;
+	int				exit_status;
+	int				new_stdin;
+	int				new_stdout;
+	int				new_stderr;
+	int				pipe_old;
+	int				pipe_in;
+	int				pipe_out;
+	volatile int	newline;
+	//volatile int	control;
+	//int				is_builtin;
+	volatile int	here_doc_control_c;
+	char			*succ_str;
+	char			*fail_str;
+}	t_data;
 // Tokenizer Utils
 t_token_list		*tokenizer(char *line);
 char				*is_redirections(t_token_list **tokens, char *line);

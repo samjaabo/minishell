@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:39:20 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/13 21:59:51 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/15 15:30:29 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,5 @@ void	ft_unset(char **args)
 		free(g_data.env);
 		g_data.env = arr;
 	}
+	g_data.exit_status = ft_isnot_valid_identifier(NULL, 0);
 }

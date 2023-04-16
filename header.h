@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/14 15:33:36 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/15 12:46:56 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 
 #include <signal.h>
 #include <sys/stat.h>
+#include <termios.h>
 
 typedef struct s_list {
 	char			*value;
@@ -61,7 +62,14 @@ enum e_constants {
 	STATUS_HERE_DOC,
 	IS_BUILTIN,
 };
-
+enum e_exit_codes {
+	CMD_NOT_FOUND=127,
+	GENERAL_ERROR=1,
+	PERMISSION=126,
+	INVALID_EXIT_ARG=128,
+	EXIT_CODE_OUT_RANGE=255,
+	SIGNAL=128,// + siganl number 
+};
 //=============<GLOBAL>===============
 typedef struct s_data {
 	char			**env;
@@ -73,6 +81,7 @@ typedef struct s_data {
 	int				pipe_old;
 	int				pipe_in;
 	int				pipe_out;
+	volatile int	newline;
 	//volatile int	control;
 	//int				is_builtin;
 	volatile int	here_doc_control_c;
@@ -99,12 +108,12 @@ t_cmd	*ft_lstnew(int ids);
 void	ft_addlast(t_cmd **head, t_cmd *new);
 char	*ft_clear(char **ar);
 void	ftx_lstclear(t_cmd **head);
-void	ft_printcmd(t_cmd *head);
+
 //====================================
 
 //=============exec.c===============
 int		ft_redirection(t_cmd *cmd);
-int		ft_exec(t_cmd *cmd, char *path, char **env);
+int		ft_exec(t_cmd *cmd, char *path);
 int		ft_return_default_stdio(void);
 
 //=============pipe.c===============
@@ -114,6 +123,7 @@ int		ft_close_pipe_in_parent(t_cmd *cmd);
 
 //=============here_doc.c===============
 int		ft_do_here_doc(t_cmd *cmd);
+char	*ft_read(void);
 
 //=============redirection.c===============
 int		ft_file_to_stdin(char *file);
@@ -134,6 +144,7 @@ void	ft_perror(const char *msg);
 void	ft_error(const char *cmd, const char *msg);
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
 void	ft_update_prompt_string(void);
+char	*ft_readline_nottty(void);
 
 //=============cmd_path.c===============
 char	*ft_get_cmd_path(const char *path, const char *cmd);
@@ -159,6 +170,7 @@ void	ft_pwd(void);
 void	ft_cd(char *s);
 int		ft_builtins(t_cmd *cmd);
 int		ft_is_builtin(t_cmd *cmd);
+void	ft_builtin_exit(char **args);
 
 //////tmp
 t_cmd	*body(char *line);

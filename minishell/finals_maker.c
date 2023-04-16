@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   finals_maker.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byoussef <byoussef@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 00:07:54 by byoussef          #+#    #+#             */
-/*   Updated: 2023/04/14 00:16:36 by byoussef         ###   ########.fr       */
+/*   Updated: 2023/04/15 16:03:04 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
 
 void	finals_m(t_token_list	*tokens, t_token_list	**finals)
 {
@@ -75,7 +77,7 @@ void	finals_m(t_token_list	*tokens, t_token_list	**finals)
 	if (tokens->type == PIPE)
 	{	if(c)
 			addback(finals, c, WORD);
-		write(1, "parse error\n", ft_strlen("parse error\n"));
+		write(2, "parse error\n", 13);
 		ft_lstclear(finals);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:06:54 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/14 15:39:49 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/15 21:49:38 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	ft_perror(const char *msg)
 	write(2, "minishell: ", 12);
 	perror(msg);
 	errno = 0;
+	g_data.exit_status=GENERAL_ERROR;
 }
 
 void	ft_error(const char *cmd, const char *msg)
@@ -66,6 +67,7 @@ void	ft_error(const char *cmd, const char *msg)
 	write(2, ": ", 2);
 	write(2, msg, ft_strlen(msg));
 	write(2, "\n", 1);
+	g_data.exit_status=GENERAL_ERROR;
 }
 
 // int	ft_istty(void)
@@ -78,6 +80,7 @@ void	ft_error(const char *cmd, const char *msg)
 // 		return (ft_error("STDERR", "Is not a terminal"), 0);
 // 	return (1);
 // }
+//if its the same fd it does nothing...
 static int	ft_dup_default_stdio(void)
 {
 	if ((g_data.new_stdin=dup(STDIN_FILENO)) < 0)
@@ -91,13 +94,21 @@ static int	ft_dup_default_stdio(void)
 
 void	ft_init(char **env)
 {
+	// if (!isatty(STDIN_FILENO))
+	// 	exit(0);
+	int fd;
 	if (ft_copy_env(env) != SUCCESS)
 		exit(1);
 	ft_update_prompt_string();
 	//g_data.here_doc = NULL;
-	system("clear");
-	ft_cd("tmp");
+	//system("clear");
 	ft_dup_default_stdio();
+	fd = open("/dev/null", O_WRONLY);
+	dup2(fd, 2);
+	close(fd);
+	ft_cd("tmp");
+	dup2(g_data.new_stderr, 2);
+	
 }
 
 void	ft_update_prompt_string(void)
@@ -206,4 +217,14 @@ int	ft_copy_env(char **env)
 		++i;
 	}
 	return (SUCCESS);
+}
+
+char	*ft_readline_nottty(void)
+{
+	char *line;
+
+	if (isatty(STDIN_FILENO))
+		return (NULL);
+	line = ft_read();
+	return (line);
 }

@@ -6,11 +6,12 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 12:49:24 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/02 14:46:05 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/15 21:47:05 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdint.h>
 
 int	ft_atoi(const char *str)
 {

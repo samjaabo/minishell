@@ -1,6 +1,10 @@
 {
 	"files.associations": {
 		"header.h": "c",
-		"signal.h": "c"
+		"signal.h": "c",
+		"stat.h": "c",
+		"stdio.h": "c",
+		"libft.h": "c",
+		"minishell.h": "c"
 	}
 }

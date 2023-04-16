@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:33:39 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/14 17:55:02 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/15 18:44:08 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,27 @@ void	ft_empty_export(char **args)
 int	ft_isnot_valid_identifier(char *str, char stop)
 {
 	int	i;
+	static int	status = 0;
 
+	if (!str && !stop)
+	{
+		i = status;
+		status = 0;
+		return (i);
+	}
 	if (!ft_isalpha(str[0]) && str[0] != '_')
 	{
-			g_data.exit_status = 1;
+			status = GENERAL_ERROR;
 			return (ft_error_not_valid(str), ERROR);
 	}
 	i = 0;
 	while (str[i] && str[i] != stop)
 	{
+		if (str[i] == '+' && str[i+1] == '=')
+			break ;
 		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
 		{
-			g_data.exit_status = 1;
+			status = GENERAL_ERROR;
 			return (ft_error_not_valid(str), ERROR);
 		}
 		++i;
@@ -92,4 +101,5 @@ void	ft_export(char **args)//recall malloc on args
 			return (ft_perror("malloc"));
 		g_data.env = arr;
 	}
+	g_data.exit_status = ft_isnot_valid_identifier(NULL, 0);
 }

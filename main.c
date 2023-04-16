@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:56:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/14 14:04:29 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/16 17:12:31 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ int main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	ft_init(env);
+	ft_init(env);  
 	if (ft_signals() < 0)
 		return (1);
     while (TRUE)
     {
+		dprintf(2, "status = (%d)\n", g_data.exit_status);
 		g_data.status = STATUS_READIND;
 		// if (read(0, 0, 0) < 0)
 		// {
@@ -37,10 +38,8 @@ int main(int argc, char **argv, char **env)
 		else
 			line = prompt(g_data.exit_status, "minshell: ", "minshell: ");
 		g_data.status = STATUS_EXECUTING;
-		if (!ft_strncmp(line, "exit", 5))
-			ft_exit();
 		cmd = body(line);
-		ft_exec(cmd, getenv("PATH"), NULL);
+		ft_exec(cmd, g_data.env[ft_getenv("PATH")]);
 		ftx_lstclear(&cmd);
     }
 	ft_exit();

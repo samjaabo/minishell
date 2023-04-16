@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 SRC = minishell.c utils.c utils2.c tokenizer.c tokenizer_utils.c syntax.c ft_strjoin.c ft_memcpy.c quotes.c finals_maker.c
 OBJ = $(SRC:.c=.o)
 

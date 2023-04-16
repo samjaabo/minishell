@@ -6,11 +6,13 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:07:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/13 15:54:01 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/15 14:39:38 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+extern t_data	g_data;
 
 static int	ft_check_args(const char *path, const char *cmd)
 {
@@ -19,9 +21,9 @@ static int	ft_check_args(const char *path, const char *cmd)
 	if (!path || !cmd)
 		return (ERROR);
 	if (stat(cmd, &info) == 0 && S_ISDIR(info.st_mode))
-		return (ft_error(cmd, "is a directory"), ERROR);
+		return (ft_error(cmd, "is a directory"), g_data.exit_status=126, ERROR);
 	if (!cmd[0] || (!path[0] && !ft_strrchr(cmd, '/')))
-		return (ft_error(cmd, "command not found"), ERROR);
+		return (ft_error(cmd, "command not found"), g_data.exit_status=127, ERROR);
 	return (SUCCESS);
 }
 
@@ -48,5 +50,6 @@ char	*ft_get_cmd_path(const char *path, const char *cmd)
 			return (ft_clear(paths), file);
 		free(file);
 	}
+	g_data.exit_status=CMD_NOT_FOUND;
 	return (ft_clear(paths), ft_error(cmd, "command not found"), NULL);
 }

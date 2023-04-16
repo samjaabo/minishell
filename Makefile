@@ -6,20 +6,20 @@
 #    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/14 17:48:41 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/15 22:38:12 by samjaabo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = program.a
 CC = cc
-CFLAGS = -Wall -Wextra #-fsanitize=address
+CFLAGS = -Wall -Wextra -fsanitize=address
 
 MAIN_SRC = signals.c main.c lists.c exec.c redirection.c split.c utils.c \
 			cmd_path.c translate.c minishell/minishell.c minishell/utils.c minishell/utils2.c \
 			minishell/tokenizer.c minishell/tokenizer_utils.c minishell/syntax.c minishell/ft_strjoin.c \
 			minishell/ft_memcpy.c minishell/quotes.c minishell/finals_maker.c \
 			pipe.c here_doc.c \
-			builtin_cd.c builtin_echo.c builtin_env.c builtin_export.c builtin_pwd.c builtin_unset.c
+			builtin_cd.c builtin_echo.c builtin_env.c builtin_export.c builtin_pwd.c builtin_unset.c builtin_exit.c
 			
 MAIN_OBJS = $(MAIN_SRC:.c=.o)
 # directory variables

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:06:40 by byoussef          #+#    #+#             */
-/*   Updated: 2023/04/12 15:41:36 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/15 21:48:45 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,14 @@ t_cmd	*body(char *line)
 {
 	t_token_list	*tokens;
 	t_token_list	*finals;
-	t_cmd	*head;
+	t_cmd			*head;
 
 	tokens = tokenizer(line);
 	syntax_red(&tokens);
 	syntax_pipe(&tokens);
-	char *c;
 	finals = NULL;
-	c = NULL;
 	finals_m(tokens, &finals);
+	ft_lstclear(&tokens);
 	head = ft_translate(finals);
 	ft_lstclear(&finals);
 	// ft_exec(head, getenv("PATH"), env);
@@ -54,18 +53,31 @@ t_cmd	*body(char *line)
 
 // t_data	g_data;
 void	ft_control_d(void);
+char	*ft_readline_nottty(void);
 char	*prompt(int exit_status, char *succ, char *fail)
 {
     static char	*line = NULL;
 	char		*s;
 
-	if (exit_status != 0)
-		line = readline(fail);
+	// if (111111111111111)
+	// 	line = ft_readline_nottty();
+	if (isatty(STDIN_FILENO))
+	{
+		if (isatty(STDOUT_FILENO))
+		{
+			if (exit_status == 0)
+				line = readline(succ);
+			else
+				line = readline(fail);
+		}
+		else
+			line = readline("");
+	}
 	else
-		line = readline(succ);
+		line = ft_readline_nottty();
 	if (!line)
 		ft_control_d();
-	if (line && line[0])
+	if (line && line[0] && isatty(STDIN_FILENO))
 		add_history(line);
 	s = remove_additional_spaces(line);
     return (s);

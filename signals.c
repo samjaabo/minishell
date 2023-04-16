@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 18:23:42 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/14 17:46:31 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/15 12:20:22 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@ static void	ft_control_c(int sig)
 	if (g_data.status == STATUS_READIND)
 	{
 		rl_replace_line("", 0);
-		// if (g_data.control == 100)
-		// {
-		// 	rl_on_new_line();
-		// 	rl_redisplay();
-		// }
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
@@ -33,19 +28,12 @@ static void	ft_control_c(int sig)
 	else if (g_data.status == STATUS_HERE_DOC)
 	{
 		g_data.here_doc_control_c = TRUE;
-		// g_data.control = 1;
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		close(0);
 	}
 	else if (g_data.status == STATUS_EXECUTING)
-	{
-		// errno = 0;
-		// while (errno != ECHILD)
-		// 	wait(NULL);
-		//write(1, "\n", 1);
-		//PASS-IGNORE
-	}
+		g_data.newline = TRUE;
 }
 
 void	ft_control_slash(int sig)
@@ -54,6 +42,7 @@ void	ft_control_slash(int sig)
 		return ;
 	if (g_data.status == STATUS_EXECUTING)
 	{
+		write(1, "\n", 1);
 		exit(1);
 	}
 }
@@ -62,9 +51,10 @@ void	ft_control_d(void)
 {
 	rl_replace_line("", 0);
 	rl_clear_history();
-    // rl_on_new_line();
-    // rl_redisplay();
-	write(1, "exit\n", 6);
+	if (isatty(STDIN_FILENO))
+		write(1, "exit\n", 6);
+	// else
+	// 	write(1, "\n", 2);
 	ft_exit();
 }
 

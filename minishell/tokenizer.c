@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byoussef <byoussef@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 16:06:20 by byoussef          #+#    #+#             */
-/*   Updated: 2023/04/03 12:17:08 by byoussef         ###   ########.fr       */
+/*   Updated: 2023/04/15 16:10:11 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
 #include "minishell.h"
+
+extern t_data	g_data;
 
 // void free_node(t_token_list **tokens)
 // {
@@ -41,8 +41,9 @@ t_token_list *tokenizer(char *line)
 		{
 			if(is_open_quote(line, '\'') < 2)
 			{
-				printf("\e[1;31m open quotes1!\n \e[0m");
+				write(2, "\e[1;31m open quotes1!\n\e[0m", 27);
 				ft_lstclear(&tokens);
+				g_data.exit_status = 258;
 				break;
 			}	
 			line = quotes_maker(&tokens, line);
@@ -51,14 +52,14 @@ t_token_list *tokenizer(char *line)
 		{
 			if(is_open_quote(line, '\"') < 2)
 			{
-				printf("\e[1;31m open quotes2!\n \e[0m");
+				write(2, "\e[1;31m open quotes2!\n\e[0m", 27);
 				ft_lstclear(&tokens);
+				g_data.exit_status = 258;
 				break;
 			}
 			line = is_dquote(&tokens, line);
 			if (*line == '$')
 				line = afdollar(&tokens, line);
-			
 		}
         else
 		{

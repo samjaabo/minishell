@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:45:55 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/14 18:03:50 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/15 15:57:39 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_env(char **args)
 			printf("%s\n", g_data.env[i]);
 		++i;
 	}
-	g_data.exit_status = 0;
+	g_data.exit_status = SUCCESS;
 }
 
 int	ft_is_builtin(t_cmd *cmd)
@@ -46,6 +46,8 @@ int	ft_is_builtin(t_cmd *cmd)
 		return (TRUE);
 	else if (!ft_strncmp(cmd->args[0], "unset", 6))
 		return (TRUE);
+	else if (!ft_strncmp(cmd->args[0], "exit", 5))
+		return (TRUE);
 	return (FALSE);
 }
 
@@ -63,6 +65,8 @@ static void	ft_exec_builtins(t_cmd *cmd)
 		ft_pwd();
 	else if (!ft_strncmp(cmd->args[0], "unset", 6))
 		ft_unset(cmd->args);
+	else if (!ft_strncmp(cmd->args[0], "exit", 5))
+		ft_builtin_exit(cmd->args);
 }
 
 int	ft_builtins(t_cmd *cmd)
@@ -75,6 +79,7 @@ int	ft_builtins(t_cmd *cmd)
 		return (ERROR);
 	if (ft_redirection(cmd) == ERROR)
 		return (ERROR);
+	dprintf(2, "BUILTIN\n");
 	ft_exec_builtins(cmd);
 	return (SUCCESS);
 }
