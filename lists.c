@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:26:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/15 11:56:53 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/17 18:28:39 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_cmd	*ft_lstnew(int ids)
 		return (node);
 	node->id = ids;
 	node->here_doc = -1;
+	node->pipe_in = -1;
+	node->pipe_out = -1;
 	return (node);
 }
 
@@ -64,6 +66,7 @@ void	ftx_lstclear(t_cmd **head)
 		ft_clear(node->args);
 		ft_clear(node->redirs);
 		ft_clear(node->types);
+		close(node->here_doc);
 		free(node);
 		node = next;
 	}

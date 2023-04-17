@@ -6,13 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 11:11:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/15 15:46:47 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/17 17:24:19 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-extern t_data	g_data;
 
 void	ft_builtin_error(char *cmd, char *arg, char *err)
 {

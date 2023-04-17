@@ -6,13 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:39:20 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/15 15:30:29 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/17 17:24:28 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-extern t_data	g_data;
 
 int	ft_getenv(char *var)
 {

@@ -6,13 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/16 22:16:05 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/17 17:23:28 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-extern t_data g_data;
 
 void	ft_child_close_fds_copy(void)
 {
@@ -116,6 +114,8 @@ int	ft_exec(t_cmd *cmd, char *path)
 			return (ERROR);
 		if (!ft_is_builtin(cmd))
 			pid = fork();
+		else
+			pid = -1337;
 		if (pid == -1)
 		{
 			ft_perror("fork failed");
@@ -124,8 +124,8 @@ int	ft_exec(t_cmd *cmd, char *path)
 		if (pid == 0)
 			return (exit(ft_child(cmd, path)), 0);
 		ft_parent(cmd);
-		if (!cmd->next)//id builtin is last dont wait exit_status
-			pid = -1337;
+		// if (!cmd->next && ft_is_builtin(cmd))//id builtin is last dont wait exit_status
+		// 	pid = -1337;
 		cmd = cmd->next;
 	}
 	//g_data.newline = FALSE;

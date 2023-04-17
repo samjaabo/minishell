@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/15 12:46:56 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/17 18:28:09 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,10 @@ typedef struct s_data {
 	int				new_stderr;
 	int				pipe_old;
 	int				pipe_in;
+	//int				n;
 	int				pipe_out;
-	volatile int	newline;
+	char			*default_path;
+	//volatile int	newline;
 	//volatile int	control;
 	//int				is_builtin;
 	volatile int	here_doc_control_c;
@@ -92,17 +94,17 @@ typedef struct s_data {
 //===================================
 //=============lists.c===============
 typedef struct s_cmd {
-	// char			*tmp;
 	char			**args;
-	// char			*key;
 	char			**redirs;
 	char			**types;
 	int				here_doc;
-	int				std_out;
+	int				pipe_in;
+	int				pipe_out;
 	int				id;
 	struct s_cmd	*next;
 }	t_cmd;
 
+extern t_data	g_data;
 //=============lists.c===============
 t_cmd	*ft_lstnew(int ids);
 void	ft_addlast(t_cmd **head, t_cmd *new);

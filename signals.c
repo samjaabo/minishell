@@ -6,13 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 18:23:42 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/15 12:20:22 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/17 18:14:31 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-extern t_data g_data;
 
 static void	ft_control_c(int sig)
 {
@@ -32,8 +30,8 @@ static void	ft_control_c(int sig)
 		rl_replace_line("", 0);
 		close(0);
 	}
-	else if (g_data.status == STATUS_EXECUTING)
-		g_data.newline = TRUE;
+	// else if (g_data.status == STATUS_EXECUTING)
+	// 	g_data.newline = TRUE;
 }
 
 void	ft_control_slash(int sig)

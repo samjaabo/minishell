@@ -6,13 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:33:39 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/15 18:44:08 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/17 17:42:35 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-extern t_data	g_data;
 
 static void	ft_error_not_valid(char *str)
 {
@@ -87,6 +85,10 @@ void	ft_export(char **args)//recall malloc on args
 	{
 		if (ft_isnot_valid_identifier(args[i], '='))
 			continue ;
+		if (!ft_strchr(args[i], '=') && ft_getenv(args[i]) >= 0)
+			continue ;
+		if (!ft_strncmp(args[i], "PATH", 5))
+			g_data.default_path = NULL;
 		s = ft_strchr(args[i], '=');
 		if (!s)
 			s = ft_strchr(args[i], 0);

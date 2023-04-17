@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:56:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/16 17:12:31 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/17 18:14:57 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,14 @@
 
 t_data	g_data;
 
+void fun()
+{
+	system("leaks program");
+}
+
 int main(int argc, char **argv, char **env)
 {
+	//atexit(fun);
     char	*line;
 	t_cmd  *cmd;
 

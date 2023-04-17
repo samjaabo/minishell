@@ -6,13 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:07:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/15 14:39:38 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/17 18:41:09 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-extern t_data	g_data;
 
 static int	ft_check_args(const char *path, const char *cmd)
 {
@@ -33,6 +31,7 @@ char	*ft_get_cmd_path(const char *path, const char *cmd)
 	char	*file;
 	int		i;
 
+	//printf("path = %s\n", path);
 	if (ft_check_args(path, cmd) == ERROR)
 		return (NULL);
 	if (ft_strrchr(cmd, '/'))

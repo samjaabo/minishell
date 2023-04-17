@@ -6,13 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:06:54 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/15 21:49:38 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/17 18:17:25 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "header.h"
-
-extern t_data g_data;
 
 void ft_printar(char **t)
 {
@@ -103,11 +101,15 @@ void	ft_init(char **env)
 	//g_data.here_doc = NULL;
 	//system("clear");
 	ft_dup_default_stdio();
+	/////////////delete after
 	fd = open("/dev/null", O_WRONLY);
 	dup2(fd, 2);
 	close(fd);
 	ft_cd("tmp");
 	dup2(g_data.new_stderr, 2);
+	//g_data.n = -1;
+	/////////end
+	g_data.default_path = "$PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.";
 	
 }
 
