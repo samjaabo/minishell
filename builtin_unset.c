@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:39:20 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/17 17:24:28 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:55:08 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,43 @@ char **ft_realloc_env(int ignore)
 	return (arr);
 }
 
+static void	ft_error_not_valid(char *str)
+{
+	write(2, "minishell: unset: ", 19);
+	write(2, str, ft_strlen(str));
+	write(2, ": not a valid identifier\n", 26);
+	g_data.exit_status = GENERAL_ERROR;
+}
+
+int	ft_is_not_valid_identifier(char *str, char stop)
+{
+	int	i;
+	static int	status = 0;
+
+	if (!str && !stop)
+	{
+		i = status;
+		status = SUCCESS;
+		return (i);
+	}
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+	{
+			status = GENERAL_ERROR;
+			return (ft_error_not_valid(str), ERROR);
+	}
+	i = 0;
+	while (str[i] && str[i] != stop)
+	{
+		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
+		{
+			status = GENERAL_ERROR;
+			return (ft_error_not_valid(str), ERROR);
+		}
+		++i;
+	}
+	return (SUCCESS);
+}
+
 void	ft_unset(char **args)
 {
 	int		i;
@@ -68,8 +105,10 @@ void	ft_unset(char **args)
 	errno = 0;
 	while (args[++i])
 	{
-		if (ft_isnot_valid_identifier(args[i], 0))
+		if (ft_is_not_valid_identifier(args[i], 1))
 			continue ;
+		// if (!ft_strncmp(args[i], "PATH", 5))
+		// 	g_data.default_path = FALSE;
 		var = ft_getenv(args[i]);
 		if (var < 0)
 			continue ;

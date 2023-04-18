@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/17 18:28:09 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:54:40 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,11 @@ typedef struct s_data {
 	int				exit_status;
 	int				new_stdin;
 	int				new_stdout;
-	int				new_stderr;
-	int				pipe_old;
-	int				pipe_in;
-	//int				n;
-	int				pipe_out;
-	char			*default_path;
-	//volatile int	newline;
-	//volatile int	control;
-	//int				is_builtin;
+	int				default_path;
 	volatile int	here_doc_control_c;
 	char			*succ_str;
 	char			*fail_str;
+	char			*oldpwd;
 }	t_data;
 //===================================
 //===================================
@@ -169,14 +162,57 @@ int		ft_getenv(char *var);
 void	ft_echo(char **args);
 void	ft_env(char **args);
 void	ft_pwd(void);
-void	ft_cd(char *s);
+void	ft_cd(char **args);
 int		ft_builtins(t_cmd *cmd);
 int		ft_is_builtin(t_cmd *cmd);
 void	ft_builtin_exit(char **args);
+void	ft_shell_level(void);
+int		ft_iscwd_exists(void);
+void	ft_init_env(void);
 
-//////tmp
-t_cmd	*body(char *line);
+//////tmp///////////////////////////////////////////////////////
+typedef struct s_str_len
+{
+	int	bef;
+	int	var;
+	int	aft;
+}	t_str_len;
 
-char    *prompt(int exit_status, char *succ, char *fail);
+char		*get_env(char *var);
+char		**split_and_expand(char *str);
+int			white_space(char *str);
+char		**split_cmd_line(char const *s);
+void		expand_variable(char **str, int *i);
+int			red_here_doc(char *str);
+char		**ft_free(char **str);
+void		eliminate_dollar(char **str, int i);
+
+// void		ft_perror(const char *msg);
+// int			ft_copy_env(char **env);
+// char		**ft_realloc(char **array, char *new);
+// char		*ft_clear(char **ar);
+
+/* <<---- PROCESS DATA ---->> */
+
+t_cmd		*process_data(char **splited);
+char		*remove_quote(const char *str);
+
+/* <<---- LIBFT ---->> */
+
+// char		*ft_strdup(const char *s1);
+// char		*ft_strjoin(char const *s1, char const *s2);
+// int			ft_strncmp(const char *s1, const char *s2, size_t n);
+// void		*ft_memcpy(void *dst, const void *src, size_t n);
+// size_t		ft_strlen(const char *s);
+// int			ft_isalnum(int c);
+// int			ft_isalpha(int c);
+// int			ft_isdigit(int c);
+t_cmd		*ft_lstlast(t_cmd *lst);
+// t_cmd		*ft_lstnew(void);
+void		ft_lstclear(t_cmd **lst);
+void		ft_lstadd_back(t_cmd **lst, t_cmd *new);
+int			ft_strcmp(char *s1, char *s2);
+// char		*ft_itoa(int n);
+
 
 #endif

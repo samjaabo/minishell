@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:33:39 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/17 17:42:35 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/18 18:11:29 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 static void	ft_error_not_valid(char *str)
 {
-	write(2, "minishell: unset: ", 19);
+	write(2, "minishell: export: ", 19);
 	write(2, str, ft_strlen(str));
 	write(2, ": not a valid identifier\n", 26);
+	g_data.exit_status = GENERAL_ERROR;
 }
 
 void	ft_empty_export(char **args)
@@ -30,9 +31,11 @@ void	ft_empty_export(char **args)
 	while (g_data.env && g_data.env[i])
 	{
 		s = ft_strchr(g_data.env[i], '=');
-		if (s && s[1] == 0)
+		if (!ft_strncmp(g_data.env[i], "PATH=", 5) && g_data.default_path)
+			;
+		else if (s && s[1] == 0)
 			printf("export %s\"\"\n", g_data.env[i]);
-		else
+		else if (ft_strncmp(g_data.env[i], "_=", 2))
 			printf("export %s\n", g_data.env[i]);
 		++i;
 	}
@@ -47,7 +50,7 @@ int	ft_isnot_valid_identifier(char *str, char stop)
 	if (!str && !stop)
 	{
 		i = status;
-		status = 0;
+		status = SUCCESS;
 		return (i);
 	}
 	if (!ft_isalpha(str[0]) && str[0] != '_')
@@ -58,7 +61,7 @@ int	ft_isnot_valid_identifier(char *str, char stop)
 	i = 0;
 	while (str[i] && str[i] != stop)
 	{
-		if (str[i] == '+' && str[i+1] == '=')
+		if (str[i] == '+' && str[i + 1] == '=')
 			break ;
 		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
 		{
@@ -67,7 +70,44 @@ int	ft_isnot_valid_identifier(char *str, char stop)
 		}
 		++i;
 	}
+	// if (str[i] == '+' && str[i + 1] != '=')
+	// {
+	// 	printf("%s\n",str+i);
+	// 	printf("adfvgfsdb\n");
+	// 	status = GENERAL_ERROR;
+	// 	return (ft_error_not_valid(str), ERROR);
+	// }
 	return (SUCCESS);
+}
+
+int	ft_exp_append(char *str)
+{
+	char	*s;
+	char	*join;
+	char	c;
+
+	if (!ft_strchr(str, '='))
+		return (FALSE);
+	if (*(ft_strchr(str, '=') - 1) != '+')
+		return (FALSE);
+	s = ft_strnstr(str, "+=", ft_strlen(str));
+	if (!s)
+		return (FALSE);
+	join = NULL;
+	c = *s;
+	*s = 0;
+	s += 2;
+	if (ft_getenv(str) < 0)
+		join = ft_strjoin3(str, "=", s);
+	else
+		join = ft_strjoin3(str, g_data.env[ft_getenv(str)] + ft_strlen(str), s);
+	if (!join)
+		return (ERROR);
+	ft_unset(((char *[3]){"unset", str, NULL}));
+	ft_export(((char *[3]){"export", join, NULL}));
+	free(join);
+	*s = c;
+	return (TRUE);
 }
 
 void	ft_export(char **args)//recall malloc on args
@@ -87,8 +127,10 @@ void	ft_export(char **args)//recall malloc on args
 			continue ;
 		if (!ft_strchr(args[i], '=') && ft_getenv(args[i]) >= 0)
 			continue ;
-		if (!ft_strncmp(args[i], "PATH", 5))
-			g_data.default_path = NULL;
+		if (!ft_strncmp(args[i], "PATH=", 5))
+			g_data.default_path = FALSE;
+		if (ft_exp_append(args[i]))
+			continue ;
 		s = ft_strchr(args[i], '=');
 		if (!s)
 			s = ft_strchr(args[i], 0);

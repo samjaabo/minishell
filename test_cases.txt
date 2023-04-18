@@ -40,3 +40,5 @@ echo
 
 env
 HOME="" when it is empty
+
+cat|cat|ca|cat|cat|cat|cat|ls

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:06:54 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/17 18:17:25 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/18 18:36:35 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,31 +85,27 @@ static int	ft_dup_default_stdio(void)
 		return (ERROR);
 	if ((g_data.new_stdout=dup(STDOUT_FILENO)) < 0)
 		return (ERROR);
-	if ((g_data.new_stderr=dup(STDERR_FILENO)) < 0)
-		return (ERROR);
 	return (SUCCESS);
 }
 
 void	ft_init(char **env)
 {
-	// if (!isatty(STDIN_FILENO))
-	// 	exit(0);
-	int fd;
+	char	*path;
+
 	if (ft_copy_env(env) != SUCCESS)
 		exit(1);
 	ft_update_prompt_string();
-	//g_data.here_doc = NULL;
-	//system("clear");
 	ft_dup_default_stdio();
+	ft_shell_level();
+	path = getcwd(NULL, 0);
+	if (!path)
+		ft_perror("shell-init: error retrieving current directory: getcwd: cannot access parent directories");
+	free(path);
+	ft_init_env();
 	/////////////delete after
-	fd = open("/dev/null", O_WRONLY);
-	dup2(fd, 2);
-	close(fd);
-	ft_cd("tmp");
-	dup2(g_data.new_stderr, 2);
+	//ft_cd();
 	//g_data.n = -1;
 	/////////end
-	g_data.default_path = "$PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.";
 	
 }
 
@@ -121,9 +117,17 @@ void	ft_update_prompt_string(void)
 
 	path = getcwd(NULL, 0);
 	if (!path)
-		path = ft_strdup("minishell: ");
-	fail = ft_strjoin3("\e[1;91m\u2794\e[0m \e[1;94m", ft_strrchr(path, '/'), "\e[0m ");
-	succ = ft_strjoin3("\e[1;32m\u2794\e[0m \e[1;94m", ft_strrchr(path, '/'), "\e[0m ");
+		path = ft_strdup("minishell:");
+	if (ft_strrchr(path, '/'))
+	{
+		fail = ft_strjoin3("\e[1;91m\u2794\e[0m \e[1;94m", ft_strrchr(path, '/'), "\e[0m ");
+		succ = ft_strjoin3("\e[1;32m\u2794\e[0m \e[1;94m", ft_strrchr(path, '/'), "\e[0m ");
+	}
+	else
+	{
+		fail = ft_strjoin3("\e[1;91m\u2794\e[0m \e[1;94m", path, "\e[0m ");
+		succ = ft_strjoin3("\e[1;32m\u2794\e[0m \e[1;94m", path, "\e[0m ");
+	}
 	free(g_data.succ_str);
 	free(g_data.fail_str);
 	free(path);
@@ -143,66 +147,8 @@ void	ft_exit(void)
 	free(g_data.fail_str);
 	close(g_data.new_stdin);
 	close(g_data.new_stdout);
-	close(g_data.new_stderr);
 	exit(g_data.exit_status);
 }
-
-// int	ft_realloc_fd(int new)
-// {
-// 	int		count;
-// 	int		*ints;
-// 	int		*arcpy;
-// 	int		*cpy;
-
-// 	count = 0;
-// 	while (g_data.here_doc && g_data.here_doc[count] != -1)
-// 		count++;
-// 	ints = ft_calloc((count + 2), sizeof(int));
-// 	if (!ints)
-// 		return (free(g_data.here_doc), ft_perror("malloc"), ERROR);
-// 	cpy = ints;
-// 	arcpy = g_data.here_doc;
-// 	while (g_data.here_doc && *g_data.here_doc != -1)
-// 		*ints++ = *g_data.here_doc++;
-// 	*ints++ = new;
-// 	*ints = -1;
-// 	free(arcpy);
-// 	return (SUCCESS);
-// }
-
-// int	ft_close_fds(void)
-// {
-// 	int	i;
-// 	int ret;
-
-// 	i = 0;
-// 	ret = SUCCESS;
-// 	while (g_data.here_doc[i] != -1)
-// 		ret = close(g_data.here_doc[i++]);
-// 	free(g_data.here_doc);
-// 	g_data.here_doc = NULL;
-// 	return (ret);
-// }
-
-// int    main(int ac, char **av, char **env)
-// {
-//     char **envy;
-//     int i = 0;
-//     char *s;
-
-//     while (env[i])
-//         i++;
-//     envy = malloc((i + 1) * sizeof(char *));
-//     int j = 0;
-//     while (env[j])
-//     {
-//         s = ft_strdup(env[j]);
-//         envy[j] = s;
-//         j++;
-//     }
-//     envy[j + 1] = 0;
-
-// }
 
 int	ft_copy_env(char **env)
 {
@@ -210,7 +156,7 @@ int	ft_copy_env(char **env)
 	char	**arr;
 
 	i = 0;
-	while (env[i])
+	while (env && env[i])
 	{
 		arr = ft_realloc(g_data.env, ft_strdup(env[i]));
 		if (!arr)

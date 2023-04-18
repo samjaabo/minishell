@@ -5,49 +5,120 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/13 18:45:55 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/17 17:23:47 by samjaabo         ###   ########.fr       */
+/*   Created: 2023/03/28 13:02:21 by araqioui          #+#    #+#             */
+/*   Updated: 2023/04/18 17:09:04 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	ft_cd(char *s)
+static void	go_home(void)
 {
-	int		var;
-	char	*p;
+	char	*str;
 
-	if (!s)
+	str = get_env("HOME");
+	if (!str)
 	{
-		var = ft_getenv("HOME");
-		if (var < 0)
-			return (ft_error("cd", "HOME not set"));
-		p = ft_strchr(g_data.env[var], '=');
-		if (!p)
-			return (ft_error("cd", "HOME not set"));
-		s = ++p;
-	}
-	if (chdir(s) < 0)
-	{
-		ft_perror(s);
+		printf("error: cd: HOME not set\n");
 		return ;
 	}
-	// var = ft_getenv("PWD");
-	// if (var >= 0 && ft_strchr(g_data.env[var], '='))
-	// 	ft_update_var("OLDPWD", g_data.env[var]);
-	// ft_update_var("PWD", s);
-	g_data.exit_status = SUCCESS;
+	if (chdir(str) == -1)
+	{
+		perror("chdir ");
+		return ;
+	}
+	free(str);
+}
+
+/*----------------------------------------------------------------*/
+
+static void	go_dir_in_home(char *args)
+{
+	char	*str;
+	char	*home;
+
+	home = get_env("HOME");
+	str = ft_strjoin3(home, &args[1], NULL);
+	if (!str)
+	{
+		printf("error: cd: HOME not set\n");
+		return ;
+	}
+	if (chdir(str) == -1)
+	{
+		printf("cd: %s: No such file or directory\n", str);
+		return ;
+	}
+	free(str);
+	free(home);
+}
+
+/*----------------------------------------------------------------*/
+
+void	ft_cd(char **args)
+{
+	char	*str;
+
+	if (!args[1] || (args[1][0] == 126 && !args[1][1]))
+	{
+		go_home();
+	}
+	else if (args[1][0] == 126 && args[1][1] == '/')
+	{
+		go_dir_in_home(args[1]);
+	}
+	else
+	{
+		str = getcwd(NULL, 0);
+		if (!str && args[1][0] == '.' && !args[1][1])
+		{
+			write(2, "cd: error retrieving current directory: getcwd: cannot ", 56);
+			write(2, "access parent directories: No such file or directory\n", 54);
+		}
+		if (chdir(args[1]) == -1)
+			ft_perror(args[1]);
+		if (str)
+			free(str);
+	}
 	ft_update_prompt_string();
 }
 
-int	ft_update_var_if_exists(char *var, char *value)
-{
-	char *s;
+// void	ft_cd(char *s)
+// {
+// 	int		var;
+// 	char	*p;
 
-	s = ft_strjoin3(var, "=", value);
-	if (!s)
-		return (ft_perror("malloc"), ERROR);
-	ft_export((char *[]){"export", s, NULL});
-	free(s);
-	return (SUCCESS);
-}
+// 	if (!s)
+// 	{
+// 		var = ft_getenv("HOME");
+// 		if (var < 0)
+// 			return (ft_error("cd", "HOME not set"));
+// 		p = ft_strchr(g_data.env[var], '=');
+// 		if (!p)
+// 			return (ft_error("cd", "HOME not set"));
+// 		s = ++p;
+// 	}
+// 	if (chdir(s) < 0)
+// 	{
+// 		ft_perror(s);
+// 		return ;
+// 	}
+// 	// var = ft_getenv("PWD");
+// 	// if (var >= 0 && ft_strchr(g_data.env[var], '='))
+// 	// 	ft_update_var("OLDPWD", g_data.env[var]);
+// 	// ft_update_var("PWD", s);
+// 	g_data.exit_status = SUCCESS;
+// 	ft_update_prompt_string();
+// }
+
+// int	ft_update_var_if_exists(char *var, char *value)
+// {
+// 	char *s;
+
+// 	s = ft_strjoin3(var, "=", value);
+// 	if (!s)
+// 		return (ft_perror("malloc"), ERROR);
+// 	ft_export((char *[]){"export", s, NULL});
+// 	free(s);
+// 	return (SUCCESS);
+// }

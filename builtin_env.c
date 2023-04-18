@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:45:55 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/17 17:45:28 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/18 17:58:38 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	ft_env(char **args)
 	i = 0;
 	while (g_data.env && g_data.env[i])
 	{
-		if (ft_strchr(g_data.env[i], '='))
+		if (!ft_strncmp(g_data.env[i], "PATH=", 5) && g_data.default_path)
+			;
+		else if (ft_strchr(g_data.env[i], '='))
 			printf("%s\n", g_data.env[i]);
 		++i;
 	}
@@ -52,7 +54,7 @@ int	ft_is_builtin(t_cmd *cmd)
 static void	ft_exec_builtins(t_cmd *cmd)
 {
 	if (!ft_strncmp(cmd->args[0], "cd", 3))
-		ft_cd(cmd->args[1]);
+		ft_cd(cmd->args);
 	else if (!ft_strncmp(cmd->args[0], "echo", 5))
 		ft_echo(cmd->args);
 	else if (!ft_strncmp(cmd->args[0], "env", 4))

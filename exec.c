@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/17 17:23:28 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/17 20:18:58 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	ft_child_close_fds_copy(void)
 {
 	close(g_data.new_stdin);
 	close(g_data.new_stdout);
-	close(g_data.new_stderr);
 }
 
 int	ft_return_default_stdio(void)
@@ -24,8 +23,6 @@ int	ft_return_default_stdio(void)
 	if (dup2(g_data.new_stdin, STDIN_FILENO) < 0)
 		return (ERROR);
 	if (dup2(g_data.new_stdout, STDOUT_FILENO) < 0)
-		return (ERROR);
-	if (dup2(g_data.new_stderr, STDERR_FILENO) < 0)
 		return (ERROR);
 	return (SUCCESS);
 }

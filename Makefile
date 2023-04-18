@@ -6,20 +6,20 @@
 #    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/17 16:28:44 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/18 18:27:02 by samjaabo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = program.a
 CC = cc
-CFLAGS = -Wall -Wextra #-fsanitize=address
+CFLAGS = -Wall -Wextra -Wall #-fsanitize=address
 
 MAIN_SRC = signals.c main.c lists.c exec.c redirection.c split.c utils.c \
-			cmd_path.c translate.c minishell/minishell.c minishell/utils.c minishell/utils2.c \
-			minishell/tokenizer.c minishell/tokenizer_utils.c minishell/syntax.c minishell/ft_strjoin.c \
-			minishell/ft_memcpy.c minishell/quotes.c minishell/finals_maker.c \
-			pipe.c here_doc.c \
-			builtin_cd.c builtin_echo.c builtin_env.c builtin_export.c builtin_pwd.c builtin_unset.c builtin_exit.c
+			cmd_path.c translate.c \
+			pipe.c here_doc.c env_default.c \
+			builtin_cd.c builtin_echo.c builtin_env.c builtin_export.c builtin_pwd.c builtin_unset.c builtin_exit.c \
+			parsing/expand_var.c parsing/quot_pipe_red.c  parsing/split_cmd_line.c \
+			parsing/free_split.c parsing/red_here_doc_.c  parsing/white_space.c process_data/proc_data.c process_data/remove_quotes.c
 			
 MAIN_OBJS = $(MAIN_SRC:.c=.o)
 # directory variables
