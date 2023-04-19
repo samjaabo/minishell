@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:56:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 15:06:24 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 20:33:27 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	while (1)
 	{
+		printf("eit status (%d)\n", g_data.exit_status);
 		g_data.status = STATUS_READIND;
 		rl_catch_signals = 0;
 		if (g_data.succ_str && g_data.fail_str)

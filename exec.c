@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 17:23:22 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 20:17:25 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	ft_child(t_cmd *cmd, char *path)
 	if (ft_redirection(cmd) == ERROR)
 		return (g_data.exit_status);
 	ft_child_close_fds_copy();
-	if (cmd->args)
+	if (cmd->args && !ft_exec_builtins(cmd))
 	{
 		s = ft_get_cmd_path(path, cmd->args[0]);
 		free(cmd->args[0]);
@@ -128,7 +128,12 @@ int	ft_exec(t_cmd *cmd, char *path)
 	}
 	//g_data.newline = FALSE;
 	if (pid != -1337)
+	{
+		errno = 0;
 		waitpid(pid, &g_data.exit_status, 0);
+		if (errno == EINTR)
+			g_data.exit_status += 128;
+	}
 	errno = 0;
 	while (errno == 0)
 		wait(NULL);
@@ -138,3 +143,8 @@ int	ft_exec(t_cmd *cmd, char *path)
 		return (ft_perror("wait syscall") ,ERROR);
 	return (g_data.exit_status);
 }
+
+// int	ft_wait(pid_t pid)
+// {
+
+// }

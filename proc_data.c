@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 11:15:24 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/19 14:52:10 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:47:49 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,31 @@ static int	list_len(char **splited)
 
 /*----------------------------------------------------------------*/
 
-void	classing_files(t_cmd **ptr, char *str)
+void	classing_files(t_cmd **ptr, char *str, int qu)
 {
 	if (str[0] == '<' && !str[1])
+	{
 		(*ptr)->types = ft_realloc((*ptr)->types, ft_strdup("4"));
+		(*ptr)->quote = ft_realloc((*ptr)->quote, ft_strdup("0"));
+	}
 	else if (str[0] == '<' && str[0] == str[1] && !str[2])
+	{
 		(*ptr)->types = ft_realloc((*ptr)->types, ft_strdup("2"));
+		if (qu)
+			(*ptr)->quote = ft_realloc((*ptr)->quote, ft_strdup("0"));
+		else
+			(*ptr)->quote = ft_realloc((*ptr)->quote, ft_strdup("1"));
+	}
 	else if (str[0] == '>' && !str[1])
+	{
 		(*ptr)->types = ft_realloc((*ptr)->types, ft_strdup("3"));
+		(*ptr)->quote = ft_realloc((*ptr)->quote, ft_strdup("0"));
+	}
 	else if (str[0] == '>' && str[0] == str[1] && !str[2])
+	{
 		(*ptr)->types = ft_realloc((*ptr)->types, ft_strdup("1"));
+		(*ptr)->quote = ft_realloc((*ptr)->quote, ft_strdup("0"));
+	}
 }
 
 /*----------------------------------------------------------------*/

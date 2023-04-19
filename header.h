@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 18:16:11 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 20:16:27 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct s_cmd {
 	char			**args;
 	char			**redirs;
 	char			**types;
+	char			**quote;
 	int				here_doc;
 	int				pipe_in;
 	int				pipe_out;
@@ -153,6 +154,7 @@ int		ft_signals(void);
 void	ft_control_slash(int sig);
 
 //=============builtins.c===============
+int		ft_exec_builtins(t_cmd *cmd);
 void	ft_export(char **args);
 void	ft_unset(char **args);
 int		ft_isnot_valid_identifier(char *str, char stop);
@@ -200,7 +202,7 @@ char		**split_cmd_line(char const *s);
 
 t_cmd		*process_data(char **splited);
 void		fill_the_list(t_cmd **lst, char **str, int i, int j);
-void		classing_files(t_cmd **ptr, char *str);
+void		classing_files(t_cmd **ptr, char *str, int qu);
 char		*rm_quote(char **str, int i, int j);
 
 /* <<---- LIBFT ---->> */

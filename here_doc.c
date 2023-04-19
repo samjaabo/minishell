@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 19:45:04 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 15:23:56 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 19:58:42 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,14 @@ char	*ft_read(void)
 	return (free(buf), s);
 }
 
-static int	ft_here_doc(char *limiter)
+static int	ft_here_doc(char *limiter, char *expand)
 {
 	char	*buff;
 	int		fds[2];
 
 	if (pipe(fds) < 0)
 		return (ERROR);
+	//printf("limiter=%s\n", limiter);
 	while (!g_data.here_doc_control_c)
 	{
 		buff = readline("heredoc> ");
@@ -63,6 +64,8 @@ static int	ft_here_doc(char *limiter)
 			free(buff);
 			break ;
 		}
+		if (!ft_strcmp(expand, "1"))
+			find_variable(&buff, 0);
 		write(fds[1], buff, ft_strlen(buff));
 		write(fds[1], "\n", 1);
 		free(buff);
@@ -103,7 +106,7 @@ int	ft_do_here_doc(t_cmd *cmd)
 			if (ft_atoi(cmd->types[i]) == HERE_DOCUMENT)
 			{
 				close(cmd->here_doc);
-				cmd->here_doc = ft_here_doc(cmd->redirs[i]);
+				cmd->here_doc = ft_here_doc(cmd->redirs[i], cmd->quote[i]);
 			}
 			++i;
 		}
@@ -112,4 +115,3 @@ int	ft_do_here_doc(t_cmd *cmd)
 	g_data.status = STATUS_EXECUTING;
 	return (ft_here_doc_on_control_c(tmp));
 }
-

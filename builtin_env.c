@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:45:55 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 18:18:47 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 20:20:23 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ int	ft_is_builtin(t_cmd *cmd)
 {
 	if (!cmd || !cmd->args || !cmd->args[0])
 		return (FALSE);
+	if (cmd->id == 0 && cmd->next)
+		return (FALSE);
+	if (cmd->id != 0)
+		return (FALSE);
 	if (!ft_strncmp(cmd->args[0], "cd", 3))
 		return (TRUE);
 	else if (!ft_strncmp(cmd->args[0], "echo", 5))
@@ -57,7 +61,7 @@ int	ft_is_builtin(t_cmd *cmd)
 	return (FALSE);
 }
 
-static void	ft_exec_builtins(t_cmd *cmd)
+int	ft_exec_builtins(t_cmd *cmd)
 {
 	if (!ft_strncmp(cmd->args[0], "cd", 3))
 		ft_cd(cmd->args);
@@ -73,6 +77,10 @@ static void	ft_exec_builtins(t_cmd *cmd)
 		ft_unset(cmd->args);
 	else if (!ft_strncmp(cmd->args[0], "exit", 5))
 		ft_builtin_exit(cmd->args);
+	else
+		return (FALSE);
+	// dprintf(2, "BUILTIN\n");
+	return (TRUE);
 }
 
 int	ft_builtins(t_cmd *cmd)
@@ -90,3 +98,4 @@ int	ft_builtins(t_cmd *cmd)
 	ft_exec_builtins(cmd);
 	return (SUCCESS);
 }
+

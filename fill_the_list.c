@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 22:37:54 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/19 14:52:04 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 20:30:44 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,21 @@ void	put_quotes(char **str, int nb_q)
 }
 
 /*----------------------------------------------------------------*/
-
-int	check_var_quotes(char *str)
+static int	check_var_quotes(char *str, int *qu)
 {
 	int	i;
 	int	j;
 
 	i = -1;
 	j = 0;
+	if (qu)
+		*qu = 0;
 	while (str[++i])
 	{
 		if (str[i] == 34 || str[i] == 39)
 		{
+			if (qu)
+				*qu = 1;
 			i++;
 			while (str[i] && str[i] != 39 && str[i] != 34)
 					i++;
@@ -88,7 +91,7 @@ void	fill_args(t_cmd **ptr, char **str)
 {
 	int	j;
 
-	j = check_var_quotes(*str);
+	j = check_var_quotes(*str, 0);
 	if (j)
 		put_quotes(str, j);
 	find_variable(str, 0);
@@ -101,30 +104,34 @@ void	fill_args(t_cmd **ptr, char **str)
 
 /*----------------------------------------------------------------*/
 
-void	fill_the_list(t_cmd **lst, char **str, int i, int j)
+void    fill_the_list(t_cmd **lst, char **str, int i, int j)
 {
-	t_cmd	*ptr;
+    t_cmd    *ptr;
+    int        qu;
 
-	ptr = *lst;
-	while (ptr)
-	{
-		while (str[i] && str[i][0] != 124)
-		{
-			if (str[i][0] == '<' || str[i][0] == '>')
-			{
-				j = check_var_quotes(str[i + 1]);
-				if (j)
-					put_quotes(&str[i + 1], j);
-				find_variable(&str[i + 1], 0);
-				str[i + 1] = rm_quote(&str[i + 1], 0, 0);
-				classing_files(&ptr, str[i]);
-				ptr->redirs = ft_realloc(ptr->redirs, ft_strdup(str[++i]));
-			}
-			else
-				fill_args(&ptr, &str[i]);
-			i++;
-		}
-		i++;
-		ptr = ptr->next;
-	}
+    ptr = *lst;
+    while (ptr)
+    {
+        while (str[i] && str[i][0] != 124)
+        {
+            if (str[i][0] == '<' || str[i][0] == '>')
+            {
+                j = check_var_quotes(str[i + 1], &qu);
+                if (!(str[i][0] == '<' && str[i][0] == str[i][1] && !str[i][2]))
+                {
+                    if (j)
+                        put_quotes(&str[i + 1], j);
+                    find_variable(&str[i + 1], 0);
+                }
+                str[i + 1] = rm_quote(&str[i + 1], 0, 0);
+                classing_files(&ptr, str[i], qu);
+                ptr->redirs = ft_realloc(ptr->redirs, ft_strdup(str[++i]));
+            }
+            else
+                fill_args(&ptr, &str[i]);
+            i++;
+        }
+        i++;
+        ptr = ptr->next;
+    }
 }
