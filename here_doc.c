@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 19:45:04 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/17 20:11:09 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 15:23:56 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	*ft_read(void)
 	buf = ft_calloc(2, sizeof(char));
 	if (!buf || !s)
 		return (free(s), free(buf), ft_perror("malloc"), NULL);
-	write(1, "minishell: ", 12);
 	while (buf[0] != '\n')
 	{
 		tmp = ft_strjoin3(s, buf, NULL);

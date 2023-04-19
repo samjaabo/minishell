@@ -3,40 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:11:52 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/18 12:34:03 by araqioui         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:51:58 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header.h"
-
-void	eliminate_dollar(char **str, int i)
-{
-	char	*expanded;
-	int		j;
-
-	expanded = malloc(ft_strlen(*str) * sizeof(char));
-	if (!expanded)
-		return ;
-	j = 0;
-	while (j < i)
-	{
-		expanded[j] = *(*str + j);
-		j++;
-	}
-	while (*(*str + j + 1))
-	{
-		expanded[j] = *(*str + j + 1);
-		j++;
-	}
-	expanded[j] = '\0';
-	free(*str);
-	*str = expanded;
-}
-
-/*----------------------------------------------------------------*/
+#include "header.h"
 
 static int	variable_len(char *str, int i, int *rest)
 {
@@ -47,12 +21,8 @@ static int	variable_len(char *str, int i, int *rest)
 		j = 1;
 	else
 	{
-		while (str[i + j + 1])
-		{
-			if (!ft_isalnum(str[i + j + 1]))
-				break ;
+		while (str[i + j + 1] && ft_isalnum(str[i + j + 1]))
 			j++;
-		}
 	}
 	*rest = 0;
 	while (str[i + j + *rest + 1])

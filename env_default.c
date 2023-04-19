@@ -6,15 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:22:53 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/18 18:29:00 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:32:16 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-// "OLDPWD"
-// "/Users/samjaabo/Desktop/files"
-// SHLVL="1"
 
 int		ft_iscwd_exists(void)
 {
@@ -50,7 +46,6 @@ void	ft_init_env(void)
 		g_data.default_path = TRUE;
 	}
 	free(var);
-	//ft_export(((char *[3]){"export", "_=", NULL}));
 }
 
 void	ft_shell_level(void)
@@ -91,7 +86,7 @@ char	*get_env(char *var)
 
 	all_var = ft_strjoin3(var, "=", NULL);
 	i = -1;
-	while (g_data.env[++i])
+	while (g_data.env && g_data.env[++i])
 	{
 		if (!ft_strncmp(all_var, g_data.env[i], ft_strlen(all_var)))
 		{

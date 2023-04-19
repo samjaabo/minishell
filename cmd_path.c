@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:07:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/18 18:01:05 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 15:27:34 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 static int	ft_check_args(const char *path, const char *cmd)
 {
 	struct stat info;
-	
-	if (!path || !cmd)
-		return (ERROR);
+
+	if (!path && !ft_strchr(cmd, '/'))
+		return (ft_error(cmd, "command not found"), ERROR);
 	if (stat(cmd, &info) == 0 && S_ISDIR(info.st_mode))
 		return (ft_error(cmd, "is a directory"), g_data.exit_status=126, ERROR);
-	if (!cmd[0] || (!path[0] && !ft_strrchr(cmd, '/')))
+	if (!cmd[0] || (path && !path[0] && !ft_strrchr(cmd, '/')))
 		return (ft_error(cmd, "command not found"), g_data.exit_status=127, ERROR);
 	return (SUCCESS);
 }
@@ -31,11 +31,13 @@ char	*ft_get_cmd_path(const char *path, const char *cmd)
 	char	*file;
 	int		i;
 
+	if (!cmd)
+		return (NULL);
 	if (ft_check_args(path, cmd) == ERROR)
 		return (NULL);
 	if (ft_strrchr(cmd, '/'))
 		return (ft_strdup(cmd));
-	paths = ft_mysplit(path, ':');
+	paths = ft_split(path, ':');
 	if (!paths)
 		return (ft_perror("malloc"), NULL);
 	i = 0;

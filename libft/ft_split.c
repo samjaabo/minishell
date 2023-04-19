@@ -3,103 +3,90 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samjaabo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/11 17:33:21 by samjaabo          #+#    #+#             */
-/*   Updated: 2022/10/31 17:25:13 by samjaabo         ###   ########.fr       */
+/*   Created: 2023/01/01 17:51:46 by samjaabo          #+#    #+#             */
+/*   Updated: 2023/04/19 15:26:44 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	ft_rmdup(char *s, char c, int *n)
+char	**ft_realloc(char **array, char *new)
 {
-	char	*a;
-	char	*b;
+	int		count;
+	char	**strs;
+	char	**arcpy;
+	char	**cpy;
 
-	a = s;
-	b = s;
-	while (*a == c)
-		a++;
-	while (*a)
-	{
-		if (*a == c)
-			*b++ = c;
-		while (*a == c)
-			a++;
-		if (*a != '\0')
-			*b++ = *a++;
-	}
-	*b = '\0';
-	a = ft_strchr(s, '\0');
-	if (a > s && *--a == c)
-		*a = '\0';
-	while (*s)
-		if (*s++ == c && ++(*n))
-			*(s - 1) = '\0';
+	if (!new)
+		return (ft_perror("malloc"), NULL);
+	count = 0;
+	while (array && array[count])
+		count++;
+	strs = malloc((count + 2) * sizeof(char *));
+	if (!strs)
+		return (ft_perror("malloc"), NULL);
+	cpy = strs;
+	arcpy = array;
+	while (array && *array)
+		*strs++ = *array++;
+	*strs++ = new;
+	*strs = NULL;
+	free(arcpy);
+	return (cpy);
 }
 
-static char	**ft_clear(char *a, char **ar)
+char	*ft_reallco_str(char *oldstr, char new)
 {
-	char	**cp;
+	char	*s;
+	char	*ss;
+	char	*old;
+	int		len;
 
-	free(a);
-	cp = ar;
-	while (*ar)
-		free(*ar++);
-	free(cp);
-	return (NULL);
-}
-
-static char	**splitit(char *c, char *a, char **ar, int n)
-{
-	char	**cp;
-	char	*start;
-
-	start = a;
-	cp = ar;
-	while (n--)
-	{
-		*cp = ft_strdup(start);
-		if (!*cp)
-			return (ft_clear(a, ar));
-		if (*cp++ == '\0' || (c[0] == '\0' && c[1] == '\0'))
-		{
-			free(a);
-			free(*--cp);
-			*ar = NULL;
-			return (ar);
-		}
-		start = ft_strchr(start, '\0') + 1;
-	}
-	*cp = NULL;
-	free(a);
-	return (ar);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	char	**ar;
-	char	cc[2];
-	char	*a;
-	int		n;
-
+	old = oldstr;
+	if (!oldstr)
+		return (NULL);
+	len = ft_strlen(oldstr);
+	s = malloc(len + 2);
 	if (!s)
 		return (NULL);
-	n = 1;
-	cc[0] = *s;
-	cc[1] = c;
-	a = ft_strdup(s);
-	if (!a)
-		return (NULL);
-	ft_rmdup(a, c, &n);
-	if (*a == '\0')
-		n = 0;
-	ar = (char **)ft_calloc(n + 1, sizeof(char *));
-	if (!ar)
+	ss = s;
+	while (oldstr && *oldstr)
+		*ss++ = *oldstr++;
+	*ss++ = new;
+	*ss = 0;
+	free(old);
+	return (s);
+}
+
+char	**ft_split(const char *str, char c)
+{
+	char	**args;
+	char	*buf;
+	int		i;
+
+	buf = ft_strdup("");
+	args = NULL;
+	i = 0;
+	while (str && str[i] != '\0')
 	{
-		free(a);
-		return (NULL);
+		if (str[i] == c)
+		{
+			while (str[i] == c)
+				++i;
+			if (buf[0] != 0)
+			{
+				args = ft_realloc(args, buf);
+				buf = ft_strdup("");
+			}
+		}
+		else
+			buf = ft_reallco_str(buf, str[i++]);
 	}
-	return (splitit(cc, a, ar, n));
+	if (buf[0] != 0)
+		args = ft_realloc(args, buf);
+	else
+		free(buf);
+	return (args);
 }

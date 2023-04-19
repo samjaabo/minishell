@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 12:37:37 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/10 21:00:58 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 15:26:31 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void				*ft_memmove(void *dst, const void *src, size_t len);
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
-void				ft_putnbr_fd(int n, int fd);
+void				ft_perror(const char *msg);
 void				ft_putendl_fd(char *s, int fd);
 char				**ft_split(char const *s, char c);
 char				*ft_strdup(const char *s1);
@@ -50,5 +50,6 @@ char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
+int					ft_strcmp(char *s1, char *s2);
 
 #endif

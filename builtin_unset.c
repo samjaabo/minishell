@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:39:20 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/18 17:55:08 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:04:51 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_getenv(char *var)
 	len = ft_strlen(var);
 	while (g_data.env && g_data.env[i])
 	{
-		lenvar = (int)ft_strlen(g_data.env[i]);
+		lenvar = ft_strlen(g_data.env[i]);
 		if (!ft_strncmp(g_data.env[i], var, len)
 				&& (g_data.env[i][len] == '=' || g_data.env[i][len] == 0))
 			return (i);
@@ -70,11 +70,7 @@ int	ft_is_not_valid_identifier(char *str, char stop)
 	static int	status = 0;
 
 	if (!str && !stop)
-	{
-		i = status;
-		status = SUCCESS;
-		return (i);
-	}
+		return (i=status, status=SUCCESS, i);
 	if (!ft_isalpha(str[0]) && str[0] != '_')
 	{
 			status = GENERAL_ERROR;

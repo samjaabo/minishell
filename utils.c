@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:06:54 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/18 18:36:35 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 15:53:58 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	ft_error(const char *cmd, const char *msg)
 	write(2, ": ", 2);
 	write(2, msg, ft_strlen(msg));
 	write(2, "\n", 1);
+	errno = 0;
 	g_data.exit_status=GENERAL_ERROR;
 }
 
@@ -92,6 +93,7 @@ void	ft_init(char **env)
 {
 	char	*path;
 
+	(void)env;
 	if (ft_copy_env(env) != SUCCESS)
 		exit(1);
 	ft_update_prompt_string();
@@ -102,11 +104,6 @@ void	ft_init(char **env)
 		ft_perror("shell-init: error retrieving current directory: getcwd: cannot access parent directories");
 	free(path);
 	ft_init_env();
-	/////////////delete after
-	//ft_cd();
-	//g_data.n = -1;
-	/////////end
-	
 }
 
 void	ft_update_prompt_string(void)
@@ -147,6 +144,8 @@ void	ft_exit(void)
 	free(g_data.fail_str);
 	close(g_data.new_stdin);
 	close(g_data.new_stdout);
+	ft_clear(g_data.env);
+	ft_pwd(2);
 	exit(g_data.exit_status);
 }
 
@@ -167,12 +166,12 @@ int	ft_copy_env(char **env)
 	return (SUCCESS);
 }
 
-char	*ft_readline_nottty(void)
-{
-	char *line;
+// char	*ft_readline_nottty(void)
+// {
+// 	char *line;
 
-	if (isatty(STDIN_FILENO))
-		return (NULL);
-	line = ft_read();
-	return (line);
-}
+// 	if (isatty(STDIN_FILENO))
+// 		return (NULL);
+// 	line = ft_read();
+// 	return (line);
+// }

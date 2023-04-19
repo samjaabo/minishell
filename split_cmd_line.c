@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split_cmd_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:23:17 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/14 22:14:30 by araqioui         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:52:25 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header.h"
+#include "header.h"
 
 static char	*pass_the_quotes(char *str)
 {
@@ -123,7 +123,7 @@ char	**split_cmd_line(char const *s)
 		{
 			sep[i] = ft_word(s, &j);
 			if (!sep[i++])
-				return (ft_free(sep));
+				return (ft_clear(sep), NULL);
 		}
 		s = s + j;
 		while (*s && *s == 32)

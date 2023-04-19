@@ -6,20 +6,22 @@
 #    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/18 18:27:02 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/19 16:41:49 by samjaabo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = program.a
 CC = cc
-CFLAGS = -Wall -Wextra -Wall #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
+# -fsanitize=address
 
-MAIN_SRC = signals.c main.c lists.c exec.c redirection.c split.c utils.c \
+MAIN_SRC = signals.c main.c lists.c exec.c redirection.c utils.c \
 			cmd_path.c translate.c \
 			pipe.c here_doc.c env_default.c \
+			export.c selection_sort.c \
 			builtin_cd.c builtin_echo.c builtin_env.c builtin_export.c builtin_pwd.c builtin_unset.c builtin_exit.c \
-			parsing/expand_var.c parsing/quot_pipe_red.c  parsing/split_cmd_line.c \
-			parsing/free_split.c parsing/red_here_doc_.c  parsing/white_space.c process_data/proc_data.c process_data/remove_quotes.c
+			expand_var.c find_var.c quot_pipe_red.c split_cmd_line.c \
+			fill_the_list.c proc_data.c remove_quotes.c \
 			
 MAIN_OBJS = $(MAIN_SRC:.c=.o)
 # directory variables
@@ -34,7 +36,7 @@ LIBFT_FILES = ft_atoi.c ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
 		ft_itoa.c ft_calloc.c ft_strdup.c ft_substr.c \
 		ft_strtrim.c ft_split.c ft_strmapi.c \
 		ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c \
-		ft_putendl_fd.c ft_strlen.c ft_strchr.c
+		ft_putendl_fd.c ft_strlen.c ft_strchr.c ft_strcmp.c \
 
 #src files with path
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR),$(LIBFT_FILES))
@@ -67,10 +69,7 @@ $(NAME): $(LIBFT_OBJS) $(MAIN_OBJS)
 	@$(CC) $(INCLUDE_PATH) $(CFLAGS) -c $< -o $@
 
 run:
-	@#@clear
 	@$(CC) $(READLINE_PATH) -lreadline $(CFLAGS) $(NAME) -o  program
 	@$(MAKE) fclean
-	@#cd tmp
-	@./program
-	@#cd ../
+	@env -i ./program
 	

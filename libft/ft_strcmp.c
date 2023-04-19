@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   white_space.c                                      :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/06 13:49:40 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/06 13:53:21 by araqioui         ###   ########.fr       */
+/*   Created: 2023/04/19 14:08:15 by samjaabo          #+#    #+#             */
+/*   Updated: 2023/04/19 14:09:21 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header.h"
+#include "libft.h"
 
-int	white_space(char *str)
+int    ft_strcmp(char *s1, char *s2)
 {
-	int	i;
+    int    i;
 
-	i = 0;
-	while (str[i] && str[i] == 32)
-		i++;
-	if (!str[i])
-		return (1);
-	return (0);
+    i = 0;
+    while (s1[i] == s2[i] && s1[i] && s2[i])
+        i++;
+    return (s1[i] - s2[i]);
 }

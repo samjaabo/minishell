@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/18 17:54:40 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:16:11 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef struct s_data {
 	volatile int	here_doc_control_c;
 	char			*succ_str;
 	char			*fail_str;
-	char			*oldpwd;
+	// char			*oldpwd;
 }	t_data;
 //===================================
 //===================================
@@ -126,7 +126,6 @@ int		ft_write_append(char *file);
 int		ft_write_truncate(char *file);
 
 //=============split.c===============
-char	**ft_mysplit(const char *str, char c);
 char	**ft_realloc(char **array, char *new);
 
 //=============utils.c===============
@@ -161,7 +160,7 @@ char	**ft_realloc_env(int ignore);
 int		ft_getenv(char *var);
 void	ft_echo(char **args);
 void	ft_env(char **args);
-void	ft_pwd(void);
+void	ft_pwd(int n);
 void	ft_cd(char **args);
 int		ft_builtins(t_cmd *cmd);
 int		ft_is_builtin(t_cmd *cmd);
@@ -169,6 +168,9 @@ void	ft_builtin_exit(char **args);
 void	ft_shell_level(void);
 int		ft_iscwd_exists(void);
 void	ft_init_env(void);
+void	ft_update_oldpwd(void);
+void	ft_update_pwd(void);
+void	ft_update_lastcmd(char **args);
 
 //////tmp///////////////////////////////////////////////////////
 typedef struct s_str_len
@@ -178,14 +180,16 @@ typedef struct s_str_len
 	int	aft;
 }	t_str_len;
 
-char		*get_env(char *var);
-char		**split_and_expand(char *str);
-int			white_space(char *str);
-char		**split_cmd_line(char const *s);
+void		selection_sort_vars(void);
+void		selection_sort(char **env, int len);
+void		export(char **args);
+int			valid_var(char *str);
+
+char		**syntax_and_split(char *str);
 void		expand_variable(char **str, int *i);
-int			red_here_doc(char *str);
-char		**ft_free(char **str);
-void		eliminate_dollar(char **str, int i);
+void		find_variable(char **str, int i);
+char		*get_env(char *var);
+char		**split_cmd_line(char const *s);
 
 // void		ft_perror(const char *msg);
 // int			ft_copy_env(char **env);
@@ -195,7 +199,9 @@ void		eliminate_dollar(char **str, int i);
 /* <<---- PROCESS DATA ---->> */
 
 t_cmd		*process_data(char **splited);
-char		*remove_quote(const char *str);
+void		fill_the_list(t_cmd **lst, char **str, int i, int j);
+void		classing_files(t_cmd **ptr, char *str);
+char		*rm_quote(char **str, int i, int j);
 
 /* <<---- LIBFT ---->> */
 

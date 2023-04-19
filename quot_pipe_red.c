@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   quot_pipe_red.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 13:27:48 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/18 11:53:58 by araqioui         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:52:13 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../header.h"
+#include "header.h"
 
 static int	open_close_quote(char *str)
 {
@@ -64,55 +64,52 @@ static int	pipe_(char *str)
 
 /*----------------------------------------------------------------*/
 
-static int	skip_single_quote(char *str, int j)
+static int	red_here_doc(char *str)
 {
-	j++;
-	while (str[j] != 39)
-		j++;
-	j++;
-	return (j);
-}
+	int	i;
 
-/*----------------------------------------------------------------*/
-
-static void	find_variable(char **str, int i)
-{
-	while (*(*str + i))
+	i = 0;
+	while (str[i])
 	{
-		if (*(*str + i) == 39)
-			i = skip_single_quote(*str, i);
-		if (*(*str + i) == 34)
+		if (str [i] == 60 || str[i] == 62)
 		{
-			i++;
-			while (*(*str + i) && *(*str + i) != 34)
-			{
-				if (*(*str + i) == '$')
-					expand_variable(str, &i);
+			if ((str[i] == 60 && str[i + 1] == 60)
+				|| (str[i] == 62 && str[i + 1] == 62))
 				i++;
-			}
 			i++;
+			while (str[i] && str[i] == 32)
+				i++;
+			if (!str[i] || str[i] == 124 || str[i] == 60 || str[i] == 62)
+				return (1);
 		}
-		if (*(*str + i) == '$'
-			&& (*(*str + i + 1) == 34 || *(*str + i + 1) == 39))
-			eliminate_dollar(str, i);
-		else if (*(*str + i) == '$'
-			&& (*(*str + i + 1) != 34 || *(*str + i + 1) != 39))
-			expand_variable(str, &i);
-		if (*(*str + i) && *(*str + i) != 34
-			&& *(*str + i) != 39 && *(*str + i) != '$')
 			i++;
 	}
+	return (0);
 }
 
 /*----------------------------------------------------------------*/
 
-char	**split_and_expand(char *str)
+static int	white_space(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] == 32)
+		i++;
+	if (!str[i])
+		return (1);
+	return (0);
+}
+
+/*----------------------------------------------------------------*/
+
+char	**syntax_and_split(char *str)
 {
 	char	**split;
 	int		i;
 
-	split = NULL;
 	i = 0;
+	split = NULL;
 	if (!white_space(str))
 	{
 		if (open_close_quote(str) || pipe_(str) || red_here_doc(str))
@@ -120,11 +117,7 @@ char	**split_and_expand(char *str)
 			printf("error: invalid syntax\n");
 			return (NULL);
 		}
-		find_variable(&str, i);
-		if (str[0])
-			split = split_cmd_line(str);
-		free(str);
+		split = split_cmd_line(str);
 	}
 	return (split);
 }
-

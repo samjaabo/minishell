@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:56:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/18 18:03:05 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 15:06:24 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,6 @@
 
 t_data	g_data;
 
-void fun()
-{
-	system("leaks program");
-}
-
-// int main(int argc, char **argv, char **env)
-// {
-// 	//atexit(fun);
-//     char	*line;
-// 	t_cmd  *cmd;
-
-// 	(void)argc;
-// 	(void)argv;
-// 	ft_init(env);  
-// 	if (ft_signals() < 0)
-// 		return (1);
-//     while (TRUE)
-//     {
-// 		dprintf(2, "status = (%d)\n", g_data.exit_status);
-// 		g_data.status = STATUS_READIND;
-// 		// if (read(0, 0, 0) < 0)
-// 		// {
-// 		// 	ft_perror("can't read from STDIN");
-// 		// 	break ;
-// 		// }
-// 		if (g_data.succ_str && g_data.fail_str)
-// 			line = prompt(g_data.exit_status, g_data.succ_str, g_data.fail_str);
-// 		else
-// 			line = prompt(g_data.exit_status, "minshell: ", "minshell: ");
-// 		g_data.status = STATUS_EXECUTING;
-// 		cmd = body(line);
-// 		if (ft_getenv("PATH") >= 0)
-// 			ft_exec(cmd, g_data.env[ft_getenv("PATH")]);
-// 		else
-// 			ft_exec(cmd, g_data.default_path);
-// 		ftx_lstclear(&cmd);
-//     }
-// 	ft_exit();
-// }
 char	*prompt(int exit_status, char *succ, char *fail)
 {
     static char	*line = NULL;
@@ -70,23 +31,13 @@ char	*prompt(int exit_status, char *succ, char *fail)
 			line = readline("");
 	}
 	else
-		line = ft_readline_nottty();
+		line = ft_read();
 	if (!line)
 		ft_control_d();
 	if (line && line[0] && isatty(STDIN_FILENO))
 		add_history(line);
     return (line);
 }
-
-// void	handle_sigint(int sig)
-// {
-// 	(void)sig;
-// 	printf("\n");
-// 	rl_on_new_line();
-// 	rl_replace_line("", 0);
-// 	rl_redisplay();
-// }
-
 /*----------------------------------------------------------------*/
 
 int	main(int ac, char **av, char **env)
@@ -116,7 +67,7 @@ int	main(int ac, char **av, char **env)
 		if (str[0] != '\0')
 		{
 			//add_history(str);
-			splited = split_and_expand(str);
+			splited = syntax_and_split(str);
 			if (splited)
 			{
 				g_data.status = STATUS_EXECUTING;
@@ -145,8 +96,7 @@ int	main(int ac, char **av, char **env)
 				// ft_lstclear(&lst);
 			}
 		}
-		else
-			free(str);
+		free(str);
 	}
 	ft_exit();
 	return (0);

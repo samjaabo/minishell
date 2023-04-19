@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:33:39 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/18 18:11:29 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:29:51 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,9 @@ static void	ft_error_not_valid(char *str)
 
 void	ft_empty_export(char **args)
 {
-	int i;
-	char *s;
-
 	if (!args || !args[0] || args[1])
 		return ;
-	i = 0;
-	while (g_data.env && g_data.env[i])
-	{
-		s = ft_strchr(g_data.env[i], '=');
-		if (!ft_strncmp(g_data.env[i], "PATH=", 5) && g_data.default_path)
-			;
-		else if (s && s[1] == 0)
-			printf("export %s\"\"\n", g_data.env[i]);
-		else if (ft_strncmp(g_data.env[i], "_=", 2))
-			printf("export %s\n", g_data.env[i]);
-		++i;
-	}
+	selection_sort_vars();
 	g_data.exit_status = 0;
 }
 
@@ -70,13 +56,6 @@ int	ft_isnot_valid_identifier(char *str, char stop)
 		}
 		++i;
 	}
-	// if (str[i] == '+' && str[i + 1] != '=')
-	// {
-	// 	printf("%s\n",str+i);
-	// 	printf("adfvgfsdb\n");
-	// 	status = GENERAL_ERROR;
-	// 	return (ft_error_not_valid(str), ERROR);
-	// }
 	return (SUCCESS);
 }
 
@@ -102,7 +81,7 @@ int	ft_exp_append(char *str)
 	else
 		join = ft_strjoin3(str, g_data.env[ft_getenv(str)] + ft_strlen(str), s);
 	if (!join)
-		return (ERROR);
+		return (*s = c, ERROR);
 	ft_unset(((char *[3]){"unset", str, NULL}));
 	ft_export(((char *[3]){"export", join, NULL}));
 	free(join);

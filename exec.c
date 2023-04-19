@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/17 20:18:58 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:23:22 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static int	ft_child(t_cmd *cmd, char *path)
 {
 	char	*s;
 
+	s = 0;
 	if (signal(SIGQUIT, ft_control_slash) == SIG_ERR)
 		return (ft_perror("siganl to set handler fail"), g_data.exit_status);
 	if (ft_pipe_in_child(cmd) == ERROR)
