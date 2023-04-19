@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:26:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/18 15:03:36 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/19 20:37:58 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	ftx_lstclear(t_cmd **head)
 		ft_clear(node->args);
 		ft_clear(node->redirs);
 		ft_clear(node->types);
+		ft_clear(node->quote);
 		close(node->here_doc);
 		free(node);
 		node = next;
