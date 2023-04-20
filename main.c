@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:56:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 21:26:49 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:58:56 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	main(int ac, char **av, char **env)
 	ft_signals();
 	while (TRUE)
 	{
-		printf("status->(%d)\n", g_data.exit_status);
 		g_data.status = STATUS_READIND;
 		rl_catch_signals = 0;
 		if (g_data.succ_str && g_data.fail_str)
