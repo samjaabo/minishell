@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:33:39 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 17:29:51 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:45:56 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ int	ft_exp_append(char *str)
 	else
 		join = ft_strjoin3(str, g_data.env[ft_getenv(str)] + ft_strlen(str), s);
 	if (!join)
-		return (*s = c, ERROR);
+		return (*(s - 2)=c, ERROR);
 	ft_unset(((char *[3]){"unset", str, NULL}));
 	ft_export(((char *[3]){"export", join, NULL}));
 	free(join);
-	*s = c;
+	*(s - 2) = c;
 	return (TRUE);
 }
 
@@ -104,6 +104,7 @@ void	ft_export(char **args)//recall malloc on args
 	{
 		if (ft_isnot_valid_identifier(args[i], '='))
 			continue ;
+		printf("data=%s\n", args[i]);
 		if (!ft_strchr(args[i], '=') && ft_getenv(args[i]) >= 0)
 			continue ;
 		if (!ft_strncmp(args[i], "PATH=", 5))
@@ -114,7 +115,7 @@ void	ft_export(char **args)//recall malloc on args
 		if (!s)
 			s = ft_strchr(args[i], 0);
 		c = *s;
-		*s = '\0';
+		*s = 0;
 		ft_unset(((char *[3]){"unset", args[i], NULL}));
 		*s = c;
 		if (g_data.exit_status != SUCCESS)

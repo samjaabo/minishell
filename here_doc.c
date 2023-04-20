@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 19:45:04 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 19:58:42 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:48:22 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	ft_here_doc(char *limiter, char *expand)
 			break ;
 		}
 		if (!ft_strcmp(expand, "1"))
-			find_variable(&buff, 0);
+			find_variable(&buff, 1, 0);
 		write(fds[1], buff, ft_strlen(buff));
 		write(fds[1], "\n", 1);
 		free(buff);

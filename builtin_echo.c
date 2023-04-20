@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:44:56 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/17 17:24:12 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:21:42 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,20 @@
 void	ft_echo(char **args)
 {
 	int		i;
+	int		o;
 	int		new_line;
 
 	if (!args || !args[0])
 		return ;
 	i = 1;
 	new_line = 1;
-	while (args && args[i] && !ft_strncmp(args[i], "-n", 3))
+	while (args && args[i] && !ft_strncmp(args[i], "-n", 2))
 	{
+		o = 2;
+		while (args[i][o] == 'n')
+			++o;
+		if (args[i][o] != 0)
+			break ;
 		new_line = 0;
 		++i;
 	}

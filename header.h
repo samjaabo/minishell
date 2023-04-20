@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 20:16:27 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:47:44 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,10 +189,13 @@ int			valid_var(char *str);
 
 char		**syntax_and_split(char *str);
 void		expand_variable(char **str, int *i);
-void		find_variable(char **str, int i);
 char		*get_env(char *var);
 char		**split_cmd_line(char const *s);
 
+
+void    find_variable(char **str, int hd, int i);
+void    var_special_case(char **str);
+int        check_var_quotes(char *str, int *qu);
 // void		ft_perror(const char *msg);
 // int			ft_copy_env(char **env);
 // char		**ft_realloc(char **array, char *new);

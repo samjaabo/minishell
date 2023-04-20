@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   proc_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 11:15:24 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/19 18:47:49 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 12:25:37 by araqioui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,34 @@ static int	list_len(char **splited)
 		if (splited[i][0] == 124)
 			count++;
 	return (count);
+}
+
+/*----------------------------------------------------------------*/
+
+int	check_var_quotes(char *str, int *qu)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = 0;
+	if (qu)
+		*qu = 0;
+	while (str[++i])
+	{
+		if (str[i] == 34 || str[i] == 39)
+		{
+			if (qu)
+				*qu = 1;
+			i++;
+			while (str[i] && str[i] != 39 && str[i] != 34)
+					i++;
+			i++;
+		}
+		if (str[i] == '$' && (ft_isalpha(str[i + 1]) || str[i + 1] == 95))
+			j++;
+	}
+	return (j);
 }
 
 /*----------------------------------------------------------------*/
