@@ -6,31 +6,44 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:45:55 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 18:18:27 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 20:43:06 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+static int	ft_check_for_update(char **last, int n)
+{
+	char	*path;
+
+	if (n == 1)
+	{
+		path = getcwd(NULL, 0);
+		if (!path)
+			return (1);
+		free(*last);
+		*last = path;
+		return (1);
+	}
+	if (n == 2)
+		return (free(*last), 1);
+	return (0);
+}
 
 void	ft_pwd(int n)
 {
 	char		*path;
 	static char	*last;
 
-	if (n == 1)
-	{
-		free(last);
-		last = getcwd(NULL, 0);
+	if (ft_check_for_update(&last, n))
 		return ;
-	}
-	if (n == 2)
-		return (free(last));
 	path = getcwd(NULL, 0);
 	if (!path)
 	{
 		if (!last)
 		{
-			ft_perror("pwd: error retrieving current directory: getcwd: cannot access parent directories:");
+			ft_perror("pwd: error retrieving current directory:"
+				" getcwd: cannot access parent directories:");
 			return ;
 		}
 		printf("%s\n", last);

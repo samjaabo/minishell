@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_the_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 22:37:54 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/20 14:40:42 by araqioui         ###   ########.fr       */
+/*   Updated: 2023/04/20 15:53:51 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,12 @@ void	fill_args(t_cmd **ptr, char **str)
 	find_variable(str, 0, 0);
 	*str = rm_quote(str, 0, 0);
 	if (!(*ptr)->args)
-		(*ptr)->args = ft_split(*str, ' ');
+	{
+		if (!(**str))
+			(*ptr)->args = ft_realloc(NULL, ft_strdup(""));
+		else
+			(*ptr)->args = ft_split(*str, ' ');
+	}
 	else
 		(*ptr)->args = ft_realloc((*ptr)->args, ft_strdup(*str));
 }

@@ -6,18 +6,18 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 14:08:15 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 14:09:21 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 19:06:52 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int    ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
-    int    i;
+	int	i;
 
-    i = 0;
-    while (s1[i] == s2[i] && s1[i] && s2[i])
-        i++;
-    return (s1[i] - s2[i]);
+	i = 0;
+	while (s1[i] == s2[i] && s1[i] && s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }

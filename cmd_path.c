@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 18:07:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 15:27:34 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 20:26:25 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,23 @@
 
 static int	ft_check_args(const char *path, const char *cmd)
 {
-	struct stat info;
+	struct stat	info;
 
 	if (!path && !ft_strchr(cmd, '/'))
-		return (ft_error(cmd, "command not found"), ERROR);
+	{
+		ft_error(cmd, "command not found");
+		return (g_data.exit_status = 127, ERROR);
+	}
 	if (stat(cmd, &info) == 0 && S_ISDIR(info.st_mode))
-		return (ft_error(cmd, "is a directory"), g_data.exit_status=126, ERROR);
+	{
+		ft_error(cmd, "is a directory");
+		return (g_data.exit_status = 126, ERROR);
+	}
 	if (!cmd[0] || (path && !path[0] && !ft_strrchr(cmd, '/')))
-		return (ft_error(cmd, "command not found"), g_data.exit_status=127, ERROR);
+	{
+		ft_error(cmd, "command not found");
+		return (g_data.exit_status = 127, ERROR);
+	}
 	return (SUCCESS);
 }
 
@@ -50,6 +59,6 @@ char	*ft_get_cmd_path(const char *path, const char *cmd)
 			return (ft_clear(paths), file);
 		free(file);
 	}
-	g_data.exit_status=CMD_NOT_FOUND;
-	return (ft_clear(paths), ft_error(cmd, "command not found"), NULL);
+	ft_error(cmd, "command not found");
+	return (g_data.exit_status = 127, ft_clear(paths), NULL);
 }

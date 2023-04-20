@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 15:47:50 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/11 21:57:36 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 16:13:33 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	ft_write_append(char *file)
 	if (fd < 0)
 		return (ft_perror(file), ERROR);
 	if (dup2(fd, STDOUT_FILENO) < 0)
-		return (ERROR);
+		return (ft_perror("dup2"), ERROR);
 	if (close(fd) < 0)
-		return (ERROR);
+		return (ft_perror("close"), ERROR);
 	return (SUCCESS);
 }
 
@@ -34,9 +34,9 @@ int	ft_write_truncate(char *file)
 	if (fd < 0)
 		return (ft_perror(file), ERROR);
 	if (dup2(fd, STDOUT_FILENO) < 0)
-		return (ERROR);
+		return (ft_perror("dup2"), ERROR);
 	if (close(fd) < 0)
-		return (ERROR);
+		return (ft_perror("close"), ERROR);
 	return (SUCCESS);
 }
 
@@ -48,8 +48,8 @@ int	ft_file_to_stdin(char *file)
 	if (fd < 0)
 		return (ft_perror(file), ERROR);
 	if (dup2(fd, STDIN_FILENO) < 0)
-		return (ERROR);
+		return (ft_perror("dup2"), ERROR);
 	if (close(fd) < 0)
-		return (ERROR);
+		return (ft_perror("close"), ERROR);
 	return (SUCCESS);
 }

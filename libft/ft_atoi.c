@@ -6,14 +6,13 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 12:49:24 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/15 21:47:05 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 19:05:46 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdint.h>
 
-int	ft_atoi(const char *str)
+long long	ft_atoi(const char *str)
 {
 	const char			*s;
 	unsigned long long	res;
@@ -30,13 +29,13 @@ int	ft_atoi(const char *str)
 		++s;
 	res = 0;
 	while (ft_isdigit(*s))
-		res = (res * 10) + (*s++ - '0');
-	if (res > 0xffffffff)
 	{
-		if (sign == 1)
-			return (-1);
-		else
-			return (0);
+		res = (res * 10) + (*s++ - '0');
+		if ((sign == 1 && res > 9223372036854775807LLU)
+			|| (sign == -1 && res > 9223372036854775808LLU))
+		{
+			return (9223372036854775807);
+		}
 	}
-	return ((int)(res * sign));
+	return ((long long)(res * sign));
 }

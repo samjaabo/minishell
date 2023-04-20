@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 12:37:37 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 15:26:31 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 19:06:15 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-int 				ft_strlen(const char *s);
+int					ft_strlen(const char *s);
 char				*ft_strchr(const char *str, int c);
 void				ft_bzero(void *s, size_t n);
 void				*ft_calloc(size_t count, size_t size);
@@ -26,7 +26,7 @@ int					ft_isascii(int c);
 int					ft_isdigit(int c);
 int					ft_isprint(int c);
 char				*ft_itoa(int n);
-int					ft_atoi(const char *str);
+long long			ft_atoi(const char *str);
 void				*ft_memchr(const void *s, int c, size_t n);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 void				*ft_memcpy(void *dst, const void *src, size_t n);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_var.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 22:52:22 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/20 14:41:45 by araqioui         ###   ########.fr       */
+/*   Updated: 2023/04/20 18:49:23 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,21 @@
 
 static int	skip_single_quote(char **str, int hd, int j)
 {
+	int	qu;
+
 	if (hd)
-		expand_variable(str, &j);
+	{
+		qu = *(*str + j++);
+		while (*(*str + j) && *(*str + j) != qu)
+		{
+			if (*(*str + j) == '$')
+			{
+				expand_variable(str, &j);
+				break ;
+			}
+			j++;
+		}
+	}
 	else
 	{
 		j++;
@@ -78,7 +91,7 @@ void	var_special_case(char **str)
 
 /*----------------------------------------------------------------*/
 
-void	find_variable(char **str, int i, int hd)
+void	find_variable(char **str, int hd, int i)
 {
 	while (*(*str + i))
 	{

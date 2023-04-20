@@ -6,13 +6,13 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:22:53 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 17:32:16 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 20:31:34 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int		ft_iscwd_exists(void)
+int	ft_iscwd_exists(void)
 {
 	char	*path;
 
@@ -50,7 +50,7 @@ void	ft_init_env(void)
 
 void	ft_shell_level(void)
 {
-	char 	*s;
+	char	*s;
 	char	*var;
 	int		i;
 	int		n;
@@ -68,15 +68,13 @@ void	ft_shell_level(void)
 		while (ft_isdigit(s[++i]))
 			;
 		if (s[i] == 0)
-			n = ft_atoi(&s[1]) + 1;
+			n = (int)ft_atoi(&s[1]) + 1;
 	}
 	s = ft_itoa(n);
 	var = ft_strjoin3("SHLVL", "=", s);
-	free(s);
 	if (!var)
-		return (ft_perror("malloc failed"));
-	ft_export(((char *[3]){"export", var, NULL}));
-	free(var);
+		return (free(s), ft_perror("malloc failed"));
+	return (free(s), ft_export(((char *[3]){"export", var, NULL})), free(var));
 }
 
 char	*get_env(char *var)

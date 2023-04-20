@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:45:55 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 20:20:23 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 18:43:54 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_env(char **args)
 {
-	int i;
+	int	i;
 
 	if (args[1])
 		return (ft_error("env", "takes no argument"));
@@ -76,10 +76,9 @@ int	ft_exec_builtins(t_cmd *cmd)
 	else if (!ft_strncmp(cmd->args[0], "unset", 6))
 		ft_unset(cmd->args);
 	else if (!ft_strncmp(cmd->args[0], "exit", 5))
-		ft_builtin_exit(cmd->args);
+		ft_builtin_exit(cmd->args, &cmd);
 	else
 		return (FALSE);
-	// dprintf(2, "BUILTIN\n");
 	return (TRUE);
 }
 
@@ -98,4 +97,3 @@ int	ft_builtins(t_cmd *cmd)
 	ft_exec_builtins(cmd);
 	return (SUCCESS);
 }
-

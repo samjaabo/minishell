@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:33:39 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 14:45:56 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 20:19:21 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,23 @@ static void	ft_error_not_valid(char *str)
 
 void	ft_empty_export(char **args)
 {
+	g_data.exit_status = 0;
 	if (!args || !args[0] || args[1])
 		return ;
 	selection_sort_vars();
-	g_data.exit_status = 0;
 }
 
 int	ft_isnot_valid_identifier(char *str, char stop)
 {
-	int	i;
-	static int	status = 0;
+	int			i;
+	static int	status;
 
 	if (!str && !stop)
-	{
-		i = status;
-		status = SUCCESS;
-		return (i);
-	}
+		return (i = status, status = SUCCESS, i);
 	if (!ft_isalpha(str[0]) && str[0] != '_')
 	{
-			status = GENERAL_ERROR;
-			return (ft_error_not_valid(str), ERROR);
+		status = GENERAL_ERROR;
+		return (ft_error_not_valid(str), ERROR);
 	}
 	i = 0;
 	while (str[i] && str[i] != stop)
@@ -65,9 +61,7 @@ int	ft_exp_append(char *str)
 	char	*join;
 	char	c;
 
-	if (!ft_strchr(str, '='))
-		return (FALSE);
-	if (*(ft_strchr(str, '=') - 1) != '+')
+	if (!ft_strchr(str, '=') || *(ft_strchr(str, '=') - 1) != '+')
 		return (FALSE);
 	s = ft_strnstr(str, "+=", ft_strlen(str));
 	if (!s)
@@ -78,18 +72,31 @@ int	ft_exp_append(char *str)
 	s += 2;
 	if (ft_getenv(str) < 0)
 		join = ft_strjoin3(str, "=", s);
+	else if (!ft_strchr(g_data.env[ft_getenv(str)], '='))
+		join = ft_strjoin3(g_data.env[ft_getenv(str)], "=", s);
 	else
-		join = ft_strjoin3(str, g_data.env[ft_getenv(str)] + ft_strlen(str), s);
+		join = ft_strjoin3(g_data.env[ft_getenv(str)], s, NULL);
 	if (!join)
-		return (*(s - 2)=c, ERROR);
+		return (*(s - 2) = c, ERROR);
 	ft_unset(((char *[3]){"unset", str, NULL}));
 	ft_export(((char *[3]){"export", join, NULL}));
-	free(join);
-	*(s - 2) = c;
-	return (TRUE);
+	return (free(join), *(s - 2) = c, TRUE);
 }
 
-void	ft_export(char **args)//recall malloc on args
+static int	ft_check_for_continue(char **args, int i)
+{
+	if (ft_isnot_valid_identifier(args[i], '='))
+		return (1);
+	if (!ft_strchr(args[i], '=') && ft_getenv(args[i]) >= 0)
+		return (1);
+	if (!ft_strncmp(args[i], "PATH=", 5))
+		g_data.default_path = FALSE;
+	if (ft_exp_append(args[i]))
+		return (1);
+	return (0);
+}
+
+void	ft_export(char **args)
 {
 	int		i;
 	char	c;
@@ -98,18 +105,10 @@ void	ft_export(char **args)//recall malloc on args
 
 	i = 0;
 	arr = NULL;
-	g_data.exit_status = 0;
 	ft_empty_export(args);
 	while (args[++i])
 	{
-		if (ft_isnot_valid_identifier(args[i], '='))
-			continue ;
-		printf("data=%s\n", args[i]);
-		if (!ft_strchr(args[i], '=') && ft_getenv(args[i]) >= 0)
-			continue ;
-		if (!ft_strncmp(args[i], "PATH=", 5))
-			g_data.default_path = FALSE;
-		if (ft_exp_append(args[i]))
+		if (ft_check_for_continue(args, i))
 			continue ;
 		s = ft_strchr(args[i], '=');
 		if (!s)
@@ -118,8 +117,6 @@ void	ft_export(char **args)//recall malloc on args
 		*s = 0;
 		ft_unset(((char *[3]){"unset", args[i], NULL}));
 		*s = c;
-		if (g_data.exit_status != SUCCESS)
-			return ;
 		arr = ft_realloc(g_data.env, ft_strdup(args[i]));
 		if (!arr)
 			return (ft_perror("malloc"));

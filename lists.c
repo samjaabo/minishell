@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:26:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 20:37:58 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 19:00:03 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,24 +74,6 @@ void	ftx_lstclear(t_cmd **head)
 	*head = NULL;
 }
 
-// void	ft_printcmd(t_cmd *head)
-// {
-// 	int i;
-
-// 	while (head)
-// 	{
-// 		i = 0;
-// 		printf("========================\ncommand: ");
-// 		while (head->args && head->args[i])
-// 			printf("%s | ", head->args[i++]);
-// 		i = 0;
-// 		printf("========================\nredirections: ");
-// 		while (head->redirs && head->redirs[i])
-// 			printf("(%s %d)| ", head->redirs[i], ft_atoi(head->types[i])),++i;
-// 		printf("\n");
-// 		head = head->next;
-// 	}
-// }
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new)
 {
 	t_cmd	*ptr;
@@ -108,26 +90,6 @@ void	ft_lstadd_back(t_cmd **lst, t_cmd *new)
 		*lst = new;
 }
 
-// void	ft_lstclear(t_cmd **lst)
-// {
-// 	t_cmd	*ptr;
-
-// 	if (!lst)
-// 		return ;
-// 	ptr = *lst;
-// 	while (ptr)
-// 	{
-// 		ptr = ptr->next;
-// 		free((*lst)->cmd);
-// 		ft_free((*lst)->args);
-// 		clear_files(&(*lst)->in_file);
-// 		clear_files(&(*lst)->out_file);
-// 		free(*lst);
-// 		*lst = ptr;
-// 	}
-// 	lst = NULL;
-// }
-
 t_cmd	*ft_lstlast(t_cmd *lst)
 {
 	if (!lst)
@@ -136,17 +98,3 @@ t_cmd	*ft_lstlast(t_cmd *lst)
 		lst = lst->next;
 	return (lst);
 }
-
-// t_cmd	*ft_lstnew(void)
-// {
-// 	t_cmd	*head;
-
-// 	head = malloc(sizeof(t_cmd));
-// 	if (!head)
-// 		return (NULL);
-// 	head->args = NULL;
-// 	head->redirs = NULL;
-// 	head->types = NULL;
-// 	head->next = NULL;
-// 	return (head);
-// }

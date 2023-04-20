@@ -6,7 +6,7 @@
 #    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/19 16:41:49 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/20 16:37:33 by samjaabo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 # -fsanitize=address
 
 MAIN_SRC = signals.c main.c lists.c exec.c redirection.c utils.c \
-			cmd_path.c translate.c \
+			cmd_path.c \
 			pipe.c here_doc.c env_default.c \
 			export.c selection_sort.c \
 			builtin_cd.c builtin_echo.c builtin_env.c builtin_export.c builtin_pwd.c builtin_unset.c builtin_exit.c \

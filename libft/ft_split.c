@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 17:51:46 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 15:26:44 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 19:54:50 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ char	**ft_split(const char *str, char c)
 			buf = ft_reallco_str(buf, str[i++]);
 	}
 	if (buf[0] != 0)
-		args = ft_realloc(args, buf);
-	else
-		free(buf);
-	return (args);
+		return (ft_realloc(args, buf));
+	return (free(buf), args);
 }

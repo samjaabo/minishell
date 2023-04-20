@@ -6,22 +6,13 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:06:54 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 15:53:58 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 18:59:04 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "header.h"
+#include "header.h"
 
-void ft_printar(char **t)
-{
-	if (!t)
-	{
-		printf("(null)");
-		return ;
-	}
-	while(*t)
-		printf(">%s<\n", *t++);
-}
+t_data	g_data;
 
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
 {
@@ -53,7 +44,7 @@ void	ft_perror(const char *msg)
 	write(2, "minishell: ", 12);
 	perror(msg);
 	errno = 0;
-	g_data.exit_status=GENERAL_ERROR;
+	g_data.exit_status = GENERAL_ERROR;
 }
 
 void	ft_error(const char *cmd, const char *msg)
@@ -66,25 +57,16 @@ void	ft_error(const char *cmd, const char *msg)
 	write(2, msg, ft_strlen(msg));
 	write(2, "\n", 1);
 	errno = 0;
-	g_data.exit_status=GENERAL_ERROR;
+	g_data.exit_status = GENERAL_ERROR;
 }
 
-// int	ft_istty(void)
-// {
-// 	if (!isatty(STDIN_FILENO))
-// 		return (ft_error("STDIN", "Is not a terminal"), 0);
-// 	if (!isatty(STDOUT_FILENO))
-// 		return (ft_error("STDOUT", "Is not a terminal"), 0);
-// 	if (!isatty(STDERR_FILENO))
-// 		return (ft_error("STDERR", "Is not a terminal"), 0);
-// 	return (1);
-// }
-//if its the same fd it does nothing...
 static int	ft_dup_default_stdio(void)
 {
-	if ((g_data.new_stdin=dup(STDIN_FILENO)) < 0)
+	g_data.new_stdin = dup(STDIN_FILENO);
+	if (g_data.new_stdin < 0)
 		return (ERROR);
-	if ((g_data.new_stdout=dup(STDOUT_FILENO)) < 0)
+	g_data.new_stdout = dup(STDOUT_FILENO);
+	if (g_data.new_stdout < 0)
 		return (ERROR);
 	return (SUCCESS);
 }
@@ -101,7 +83,8 @@ void	ft_init(char **env)
 	ft_shell_level();
 	path = getcwd(NULL, 0);
 	if (!path)
-		ft_perror("shell-init: error retrieving current directory: getcwd: cannot access parent directories");
+		ft_perror("shell-init: error retrieving current directory:"
+			" getcwd: cannot access parent directories");
 	free(path);
 	ft_init_env();
 }
@@ -117,13 +100,13 @@ void	ft_update_prompt_string(void)
 		path = ft_strdup("minishell:");
 	if (ft_strrchr(path, '/'))
 	{
-		fail = ft_strjoin3("\e[1;91m\u2794\e[0m \e[1;94m", ft_strrchr(path, '/'), "\e[0m ");
-		succ = ft_strjoin3("\e[1;32m\u2794\e[0m \e[1;94m", ft_strrchr(path, '/'), "\e[0m ");
+		fail = ft_strjoin3("", ft_strrchr(path, '/'), "$ ");
+		succ = ft_strjoin3("", ft_strrchr(path, '/'), "$ ");
 	}
 	else
 	{
-		fail = ft_strjoin3("\e[1;91m\u2794\e[0m \e[1;94m", path, "\e[0m ");
-		succ = ft_strjoin3("\e[1;32m\u2794\e[0m \e[1;94m", path, "\e[0m ");
+		fail = ft_strjoin3("", path, "$ ");
+		succ = ft_strjoin3("", path, "$ ");
 	}
 	free(g_data.succ_str);
 	free(g_data.fail_str);
@@ -165,13 +148,3 @@ int	ft_copy_env(char **env)
 	}
 	return (SUCCESS);
 }
-
-// char	*ft_readline_nottty(void)
-// {
-// 	char *line;
-
-// 	if (isatty(STDIN_FILENO))
-// 		return (NULL);
-// 	line = ft_read();
-// 	return (line);
-// }

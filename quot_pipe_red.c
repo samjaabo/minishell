@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 13:27:48 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/19 14:52:13 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 16:17:32 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char	**syntax_and_split(char *str)
 	{
 		if (open_close_quote(str) || pipe_(str) || red_here_doc(str))
 		{
-			printf("error: invalid syntax\n");
+			ft_error("error", "invalid syntax");
 			return (NULL);
 		}
 		split = split_cmd_line(str);

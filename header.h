@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 14:47:44 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 20:42:01 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,16 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-// # include <sys/types.h>
-# include <errno.h>
 
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
-
-// # include <stdint.h>
-// # include <limits.h>
+# include <limits.h>
 
 #include <signal.h>
 #include <sys/stat.h>
+# include <sys/errno.h>
+#include <sys/wait.h>
 #include <termios.h>
 
 typedef struct s_list {
@@ -81,7 +79,6 @@ typedef struct s_data {
 	volatile int	here_doc_control_c;
 	char			*succ_str;
 	char			*fail_str;
-	// char			*oldpwd;
 }	t_data;
 //===================================
 //===================================
@@ -134,19 +131,13 @@ void	ft_init(char **env);
 void	ft_exit(void);
 int		ft_realloc_fd(int new);
 int		ft_copy_env(char **env);
-void 	ft_printar(char **t);
 void	ft_perror(const char *msg);
 void	ft_error(const char *cmd, const char *msg);
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
 void	ft_update_prompt_string(void);
-char	*ft_readline_nottty(void);
 
 //=============cmd_path.c===============
 char	*ft_get_cmd_path(const char *path, const char *cmd);
-
-//=============translate.c===============
-t_cmd	*ft_translate(t_list *list);
-
 
 //=============signals.c.c===============
 void	ft_control_d(void);
@@ -166,7 +157,7 @@ void	ft_pwd(int n);
 void	ft_cd(char **args);
 int		ft_builtins(t_cmd *cmd);
 int		ft_is_builtin(t_cmd *cmd);
-void	ft_builtin_exit(char **args);
+void	ft_builtin_exit(char **args, t_cmd **cmd);
 void	ft_shell_level(void);
 int		ft_iscwd_exists(void);
 void	ft_init_env(void);
@@ -182,20 +173,18 @@ typedef struct s_str_len
 	int	aft;
 }	t_str_len;
 
-void		selection_sort_vars(void);
-void		selection_sort(char **env, int len);
-void		export(char **args);
-int			valid_var(char *str);
+void	selection_sort_vars(void);
+void	selection_sort(char **env, int len);
+void	export(char **args);
+int		valid_var(char *str);
 
-char		**syntax_and_split(char *str);
-void		expand_variable(char **str, int *i);
-char		*get_env(char *var);
-char		**split_cmd_line(char const *s);
-
-
-void    find_variable(char **str, int hd, int i);
-void    var_special_case(char **str);
-int        check_var_quotes(char *str, int *qu);
+char	**syntax_and_split(char *str);
+void	expand_variable(char **str, int *i);
+char	*get_env(char *var);
+char	**split_cmd_line(char const *s);
+void	find_variable(char **str, int hd, int i);
+void	var_special_case(char **str);
+int		check_var_quotes(char *str, int *qu);
 // void		ft_perror(const char *msg);
 // int			ft_copy_env(char **env);
 // char		**ft_realloc(char **array, char *new);
@@ -203,27 +192,15 @@ int        check_var_quotes(char *str, int *qu);
 
 /* <<---- PROCESS DATA ---->> */
 
-t_cmd		*process_data(char **splited);
-void		fill_the_list(t_cmd **lst, char **str, int i, int j);
-void		classing_files(t_cmd **ptr, char *str, int qu);
-char		*rm_quote(char **str, int i, int j);
+t_cmd	*process_data(char **splited);
+void	fill_the_list(t_cmd **lst, char **str, int i, int j);
+void	classing_files(t_cmd **ptr, char *str, int qu);
+char	*rm_quote(char **str, int i, int j);
 
 /* <<---- LIBFT ---->> */
+t_cmd	*ft_lstlast(t_cmd *lst);
 
-// char		*ft_strdup(const char *s1);
-// char		*ft_strjoin(char const *s1, char const *s2);
-// int			ft_strncmp(const char *s1, const char *s2, size_t n);
-// void		*ft_memcpy(void *dst, const void *src, size_t n);
-// size_t		ft_strlen(const char *s);
-// int			ft_isalnum(int c);
-// int			ft_isalpha(int c);
-// int			ft_isdigit(int c);
-t_cmd		*ft_lstlast(t_cmd *lst);
-// t_cmd		*ft_lstnew(void);
-void		ft_lstclear(t_cmd **lst);
-void		ft_lstadd_back(t_cmd **lst, t_cmd *new);
-int			ft_strcmp(char *s1, char *s2);
-// char		*ft_itoa(int n);
-
+void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
+int		ft_strcmp(char *s1, char *s2);
 
 #endif

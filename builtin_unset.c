@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:39:20 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/19 18:04:51 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 18:46:25 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@ int	ft_getenv(char *var)
 	{
 		lenvar = ft_strlen(g_data.env[i]);
 		if (!ft_strncmp(g_data.env[i], var, len)
-				&& (g_data.env[i][len] == '=' || g_data.env[i][len] == 0))
+			&& (g_data.env[i][len] == '=' || g_data.env[i][len] == 0))
 			return (i);
 		++i;
 	}
 	return (-1);
 }
 
-char **ft_realloc_env(int ignore)
+char	**ft_realloc_env(int ignore)
 {
-	int i;
-	char **arr;
+	int		i;
+	char	**arr;
 
 	i = 0;
 	arr = NULL;
@@ -66,15 +66,15 @@ static void	ft_error_not_valid(char *str)
 
 int	ft_is_not_valid_identifier(char *str, char stop)
 {
-	int	i;
+	int			i;
 	static int	status = 0;
 
 	if (!str && !stop)
-		return (i=status, status=SUCCESS, i);
+		return (i = status, status = SUCCESS, i);
 	if (!ft_isalpha(str[0]) && str[0] != '_')
 	{
-			status = GENERAL_ERROR;
-			return (ft_error_not_valid(str), ERROR);
+		status = GENERAL_ERROR;
+		return (ft_error_not_valid(str), ERROR);
 	}
 	i = 0;
 	while (str[i] && str[i] != stop)
@@ -103,8 +103,6 @@ void	ft_unset(char **args)
 	{
 		if (ft_is_not_valid_identifier(args[i], 1))
 			continue ;
-		// if (!ft_strncmp(args[i], "PATH", 5))
-		// 	g_data.default_path = FALSE;
 		var = ft_getenv(args[i]);
 		if (var < 0)
 			continue ;
