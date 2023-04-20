@@ -6,7 +6,7 @@
 #    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/20 16:37:33 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/20 21:51:59 by samjaabo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 # -fsanitize=address
 
 MAIN_SRC = signals.c main.c lists.c exec.c redirection.c utils.c \
-			cmd_path.c \
+			cmd_path.c builtin_utils.c \
 			pipe.c here_doc.c env_default.c \
 			export.c selection_sort.c \
 			builtin_cd.c builtin_echo.c builtin_env.c builtin_export.c builtin_pwd.c builtin_unset.c builtin_exit.c \
@@ -44,13 +44,8 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR),$(LIBFT_FILES))
 # object files variables
 LIBFT_OBJS =	$(LIBFT_SRCS:%.c=%.o)
 
-ifeq ($(shell whoami),samjaabo)
 INCLUDE_PATH = -I/Users/samjaabo/.brew/opt/readline/include
 READLINE_PATH = -L/Users/samjaabo/.brew/opt/readline/lib
-else
-INCLUDE_PATH = -I/Users/byoussef/local/include
-READLINE_PATH = -L/Users/byoussef/local/lib
-endif
 
 all: $(NAME) run
 
@@ -63,7 +58,7 @@ fclean: clean
 re: clean all
 
 $(NAME): $(LIBFT_OBJS) $(MAIN_OBJS)
-	@ar rc $(NAME) $(LIBFT_OBJS) $(GET_NEXT_LINE_OBJS) $(MAIN_OBJS)
+	@ar rc $(NAME) $(LIBFT_OBJS) $(MAIN_OBJS)
 
 %.o: %.c header.h ./libft/libft.h
 	@$(CC) $(INCLUDE_PATH) $(CFLAGS) -c $< -o $@

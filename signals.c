@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 18:23:42 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 19:04:12 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:26:27 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ int	ft_signals(void)
 {
 	if (signal(SIGINT, ft_control_c) == SIG_ERR)
 		return (ft_error("signal function",
-				"fail to set signal handler\n"), ERROR);
+				"fail to set signal handler for SIGINT\n"), ERROR);
 	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		return (ft_error("signal function",
-				"fail to set signal handler\n"), ERROR);
+				"fail to set signal handler for SIGQUIT\n"), ERROR);
 	return (SUCCESS);
 }

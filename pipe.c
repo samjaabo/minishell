@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:55:54 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 19:02:29 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:30:53 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_pipe_in_parent(t_cmd *cmd)
 	return (SUCCESS);
 }
 
-int	ft_pipe_in_child(t_cmd *cmd)
+static int	ft_middle_pipe_cmds(t_cmd *cmd)
 {
 	if (cmd->id != 0 && cmd->next)
 	{
@@ -42,6 +42,13 @@ int	ft_pipe_in_child(t_cmd *cmd)
 		if (!ft_is_builtin(cmd) && close(cmd->next->pipe_in) < 0)
 			return (ft_perror("close2 syscall"), ERROR);
 	}
+	return (SUCCESS);
+}
+
+int	ft_pipe_in_child(t_cmd *cmd)
+{
+	if (ft_middle_pipe_cmds(cmd) != SUCCESS)
+		return (ERROR);
 	if (cmd->id != 0 && !cmd->next)
 	{
 		if (dup2(cmd->pipe_in, STDIN_FILENO) < 0)

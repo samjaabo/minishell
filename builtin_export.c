@@ -6,19 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:33:39 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 20:19:21 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:42:08 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-static void	ft_error_not_valid(char *str)
-{
-	write(2, "minishell: export: ", 19);
-	write(2, str, ft_strlen(str));
-	write(2, ": not a valid identifier\n", 26);
-	g_data.exit_status = GENERAL_ERROR;
-}
 
 void	ft_empty_export(char **args)
 {
@@ -26,33 +18,6 @@ void	ft_empty_export(char **args)
 	if (!args || !args[0] || args[1])
 		return ;
 	selection_sort_vars();
-}
-
-int	ft_isnot_valid_identifier(char *str, char stop)
-{
-	int			i;
-	static int	status;
-
-	if (!str && !stop)
-		return (i = status, status = SUCCESS, i);
-	if (!ft_isalpha(str[0]) && str[0] != '_')
-	{
-		status = GENERAL_ERROR;
-		return (ft_error_not_valid(str), ERROR);
-	}
-	i = 0;
-	while (str[i] && str[i] != stop)
-	{
-		if (str[i] == '+' && str[i + 1] == '=')
-			break ;
-		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
-		{
-			status = GENERAL_ERROR;
-			return (ft_error_not_valid(str), ERROR);
-		}
-		++i;
-	}
-	return (SUCCESS);
 }
 
 int	ft_exp_append(char *str)

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:26:06 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 19:00:03 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:47:45 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,4 @@ void	ft_lstadd_back(t_cmd **lst, t_cmd *new)
 	}
 	else
 		*lst = new;
-}
-
-t_cmd	*ft_lstlast(t_cmd *lst)
-{
-	if (!lst)
-		return (0);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
 }

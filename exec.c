@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 20:41:43 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:46:17 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,41 +16,6 @@ void	ft_child_close_fds_copy(void)
 {
 	close(g_data.new_stdin);
 	close(g_data.new_stdout);
-}
-
-int	ft_return_default_stdio(void)
-{
-	if (dup2(g_data.new_stdin, STDIN_FILENO) < 0)
-		return (ERROR);
-	if (dup2(g_data.new_stdout, STDOUT_FILENO) < 0)
-		return (ERROR);
-	return (SUCCESS);
-}
-
-int	ft_redirection(t_cmd *cmd)
-{
-	int	ret;
-	int	i;
-
-	ret = SUCCESS;
-	i = 0;
-	while (cmd && cmd->redirs && cmd->redirs[i] && ret != ERROR)
-	{
-		if (ft_atoi(cmd->types[i]) == HERE_DOCUMENT && cmd->here_doc != -1)
-		{
-			ret = dup2(cmd->here_doc, STDIN_FILENO);
-			ret = close(cmd->here_doc);
-			cmd->here_doc = -1;
-		}
-		else if (ft_atoi(cmd->types[i]) == FILE_TO_STDIN)
-			ret = ft_file_to_stdin(cmd->redirs[i]);
-		else if (ft_atoi(cmd->types[i]) == WRITE_TO_FILE)
-			ret = ft_write_truncate(cmd->redirs[i]);
-		else if (ft_atoi(cmd->types[i]) == APPEND_TO_FILE)
-			ret = ft_write_append(cmd->redirs[i]);
-		++i;
-	}
-	return (ret);
 }
 
 static int	ft_child(t_cmd *cmd, char *path)
@@ -79,12 +44,6 @@ static int	ft_child(t_cmd *cmd, char *path)
 	}
 	return (g_data.exit_status);
 }
-
-// int	ft_parent(t_cmd *cmd)
-// {
-	
-// 	return (SUCCESS);
-// }
 
 static int	ft_exec_cmds(t_cmd *cmd, char *path, pid_t *pid)
 {

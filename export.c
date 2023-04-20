@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 12:28:17 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/20 20:46:52 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:49:31 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,27 @@ void	selection_sort_vars(void)
 		ft_print_env(envp, i);
 	}
 	ft_clear(envp);
+}
+
+char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
+{
+	char	*str;
+	char	*ss;
+	size_t	len;
+
+	if (!s1 && !s2 && !s3)
+		return (NULL);
+	len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1;
+	str = (char *)malloc(len * sizeof(char));
+	if (!str)
+		return (str);
+	ss = str;
+	while (s1 && *s1)
+		*str++ = *s1++;
+	while (s2 && *s2)
+		*str++ = *s2++;
+	while (s3 && *s3)
+		*str++ = *s3++;
+	*str = 0;
+	return (ss);
 }

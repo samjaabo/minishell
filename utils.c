@@ -6,36 +6,13 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:06:54 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 18:59:04 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:50:12 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
 t_data	g_data;
-
-char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
-{
-	char	*str;
-	char	*ss;
-	size_t	len;
-
-	if (!s1 && !s2 && !s3)
-		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1;
-	str = (char *)malloc(len * sizeof(char));
-	if (!str)
-		return (str);
-	ss = str;
-	while (s1 && *s1)
-		*str++ = *s1++;
-	while (s2 && *s2)
-		*str++ = *s2++;
-	while (s3 && *s3)
-		*str++ = *s3++;
-	*str = 0;
-	return (ss);
-}
 
 void	ft_perror(const char *msg)
 {
@@ -95,18 +72,15 @@ void	ft_update_prompt_string(void)
 	char	*succ;
 	char	*fail;
 
+	succ = NULL;
+	fail = NULL;
 	path = getcwd(NULL, 0);
 	if (!path)
-		path = ft_strdup("minishell:");
-	if (ft_strrchr(path, '/'))
+		path = ft_strdup("/minishell:");
+	if (path && ft_strrchr(path, '/'))
 	{
-		fail = ft_strjoin3("", ft_strrchr(path, '/'), "$ ");
-		succ = ft_strjoin3("", ft_strrchr(path, '/'), "$ ");
-	}
-	else
-	{
-		fail = ft_strjoin3("", path, "$ ");
-		succ = ft_strjoin3("", path, "$ ");
+		fail = ft_strjoin3("", ft_strrchr(path, '/') + 1, "$ ");
+		succ = ft_strjoin3("", ft_strrchr(path, '/') + 1, "$ ");
 	}
 	free(g_data.succ_str);
 	free(g_data.fail_str);
@@ -119,32 +93,4 @@ void	ft_update_prompt_string(void)
 		g_data.succ_str = NULL;
 		ft_perror("malloc");
 	}
-}
-
-void	ft_exit(void)
-{
-	free(g_data.succ_str);
-	free(g_data.fail_str);
-	close(g_data.new_stdin);
-	close(g_data.new_stdout);
-	ft_clear(g_data.env);
-	ft_pwd(2);
-	exit(g_data.exit_status);
-}
-
-int	ft_copy_env(char **env)
-{
-	int		i;
-	char	**arr;
-
-	i = 0;
-	while (env && env[i])
-	{
-		arr = ft_realloc(g_data.env, ft_strdup(env[i]));
-		if (!arr)
-			return (ft_clear(g_data.env), g_data.env = NULL, ERROR);
-		g_data.env = arr;
-		++i;
-	}
-	return (SUCCESS);
 }

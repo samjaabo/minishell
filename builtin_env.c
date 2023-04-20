@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:45:55 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 18:43:54 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:48:49 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,22 @@ int	ft_builtins(t_cmd *cmd)
 	if (ft_redirection(cmd) == ERROR)
 		return (ERROR);
 	ft_exec_builtins(cmd);
+	return (SUCCESS);
+}
+
+int	ft_copy_env(char **env)
+{
+	int		i;
+	char	**arr;
+
+	i = 0;
+	while (env && env[i])
+	{
+		arr = ft_realloc(g_data.env, ft_strdup(env[i]));
+		if (!arr)
+			return (ft_clear(g_data.env), g_data.env = NULL, ERROR);
+		g_data.env = arr;
+		++i;
+	}
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 19:45:04 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 18:59:46 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/20 21:16:14 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	*ft_read(void)
 	char	*buf;
 	int		d;
 
-	errno = 0;
 	s = ft_calloc(1, sizeof(char));
 	buf = ft_calloc(2, sizeof(char));
 	if (!buf || !s)
@@ -48,16 +47,12 @@ static int	ft_here_doc(char *limiter, char *expand)
 	int		fds[2];
 
 	if (pipe(fds) < 0)
-		return (ERROR);
+		return (ft_perror("pipe syscall"), ERROR);
 	while (!g_data.here_doc_control_c)
 	{
 		buff = readline("heredoc> ");
 		if (!buff)
-		{
-			if (!g_data.here_doc_control_c)
-				write(1, "\n", 1);
 			break ;
-		}
 		if (!ft_strncmp(buff, limiter, ft_strlen(limiter) + 1))
 		{
 			free(buff);
@@ -71,6 +66,7 @@ static int	ft_here_doc(char *limiter, char *expand)
 	}
 	if (g_data.here_doc_control_c)
 		return (close(fds[0]), close(fds[1]), -1);
+	write(1, "\n", 1);
 	return (close(fds[1]), fds[0]);
 }
 
