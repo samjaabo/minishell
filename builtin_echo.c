@@ -6,11 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:44:56 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 20:01:17 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 02:57:29 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "minishell.h"
 
 static int	ft_echo_new_line(char **args, int *i)
 {

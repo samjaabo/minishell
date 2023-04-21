@@ -6,11 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 11:11:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 20:06:04 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 02:57:29 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "minishell.h"
 
 void	ft_builtin_error(char *cmd, char *arg, char *err)
 {

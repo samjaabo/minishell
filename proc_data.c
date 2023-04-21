@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   proc_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 11:15:24 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/20 12:25:37 by araqioui         ###   ########.fr       */
+/*   Updated: 2023/04/21 02:57:29 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "minishell.h"
 
 static int	list_len(char **splited)
 {

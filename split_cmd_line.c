@@ -6,11 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:23:17 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/19 14:52:25 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 02:57:29 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "minishell.h"
 
 static char	*pass_the_quotes(char *str)
 {

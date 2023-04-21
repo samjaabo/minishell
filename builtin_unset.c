@@ -6,11 +6,11 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:39:20 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 18:46:25 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 02:57:29 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "minishell.h"
 
 int	ft_getenv(char *var)
 {

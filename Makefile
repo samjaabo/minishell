@@ -6,7 +6,7 @@
 #    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/20 22:24:24 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/21 03:03:49 by samjaabo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ fclean: clean
 re: fclean all
 
 $(NAME): $(LIBFT_OBJS) $(MAIN_OBJS)
-	@$(CC) $(CFLAGS) $(READLINE_PATH) -lreadline  $(LIBFT_OBJS) $(MAIN_OBJS) -o  $(NAME)
+	@$(CC) $(CFLAGS) $(READLINE_PATH) -lreadline $(LIBFT_OBJS) $(MAIN_OBJS) -o  $(NAME)
 
-%.o: %.c header.h ./libft/libft.h
+%.o: %.c minishell.h ./libft/libft.h
 	$(CC) $(INCLUDE_PATH) $(CFLAGS) -c $< -o $@
