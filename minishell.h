@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/21 02:57:58 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:07:25 by araqioui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,5 +156,8 @@ char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
 char	*ft_get_cmd_path(const char *path, const char *cmd);
 char	*rm_quote(char **str, int i, int j);
 t_cmd	*process_data(char **splited);
+void	fill_args(t_cmd **ptr, char **str);
+void	put_quotes(char **str, int nb_q);
+int		ft_space(char c);
 
 #endif

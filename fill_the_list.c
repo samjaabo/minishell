@@ -3,24 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   fill_the_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 22:37:54 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/21 02:57:29 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:14:41 by araqioui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	fill_array(char *str, char **new, int i, int j)
+void	fill_bet_quotes(char *str, char **new, int *i, int *j)
 {
 	int	qu;
 
+	qu = str[*i];
+	*(*new + (*j)++) = str[(*i)++];
+	while (str[*i] && str[*i] != qu)
+		*(*new + (*j)++) = str[(*i)++];
+	*(*new + (*j)++) = str[(*i)++];
+}
+
+/*----------------------------------------------------------------*/
+
+void	fill_array(char *str, char **new, int i, int j)
+{
 	while (str[i])
 	{
 		while (str[i] && str[i] != '$' && str[i] != 34 && str[i] != 39)
 			*(*new + j++) = str[i++];
-		if (str[i] == '$')
+		if (str[i] == '$' && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
 		{
 			*(*new + j++) = '"';
 			*(*new + j++) = str[i++];
@@ -28,14 +39,13 @@ void	fill_array(char *str, char **new, int i, int j)
 				*(*new + j++) = str[i++];
 			*(*new + j++) = '"';
 		}
-		if (str[i] == 34 || str[i] == 39)
+		else if (str[i] == '$')
 		{
-			qu = str[i];
 			*(*new + j++) = str[i++];
-			while (str[i] && str[i] != qu)
-				*(*new + j++) = str[i++];
 			*(*new + j++) = str[i++];
 		}
+		if (str[i] == 34 || str[i] == 39)
+			fill_bet_quotes(str, new, &i, &j);
 	}
 	*(*new + j) = '\0';
 }
@@ -52,28 +62,6 @@ void	put_quotes(char **str, int nb_q)
 	fill_array(*str, &new, 0, 0);
 	free(*str);
 	*str = new;
-}
-
-/*----------------------------------------------------------------*/
-
-void	fill_args(t_cmd **ptr, char **str)
-{
-	int	j;
-
-	j = check_var_quotes(*str, 0);
-	if (j)
-		put_quotes(str, j);
-	find_variable(str, 0, 0);
-	*str = rm_quote(str, 0, 0);
-	if (!(*ptr)->args)
-	{
-		if (!(**str))
-			(*ptr)->args = ft_realloc(NULL, ft_strdup(""));
-		else
-			(*ptr)->args = ft_split(*str, ' ');
-	}
-	else
-		(*ptr)->args = ft_realloc((*ptr)->args, ft_strdup(*str));
 }
 
 /*----------------------------------------------------------------*/

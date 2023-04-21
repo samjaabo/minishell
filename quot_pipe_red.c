@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quot_pipe_red.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 13:27:48 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/21 02:57:29 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:14:26 by araqioui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	pipe_(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] && str[i] == 32)
+	while (str[i] && ft_space(str[i]))
 		i++;
 	if (str[i] == 124)
 		return (1);
@@ -52,7 +52,7 @@ static int	pipe_(char *str)
 		if (str[i] == 124)
 		{
 			i++;
-			while (str[i] && str[i] == 32)
+			while (str[i] && ft_space(str[i]))
 				i++;
 			if (!str[i] || str[i] == 124)
 				return (1);
@@ -77,7 +77,7 @@ static int	red_here_doc(char *str)
 				|| (str[i] == 62 && str[i + 1] == 62))
 				i++;
 			i++;
-			while (str[i] && str[i] == 32)
+			while (str[i] && ft_space(str[i]))
 				i++;
 			if (!str[i] || str[i] == 124 || str[i] == 60 || str[i] == 62)
 				return (1);
@@ -94,7 +94,7 @@ static int	white_space(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] && str[i] == 32)
+	while (str[i] && ft_space(str[i]))
 		i++;
 	if (!str[i])
 		return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   proc_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 11:15:24 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/21 02:57:29 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:02:23 by araqioui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,30 @@ static int	list_len(char **splited)
 		if (splited[i][0] == 124)
 			count++;
 	return (count);
+}
+
+/*----------------------------------------------------------------*/
+
+void	fill_args(t_cmd **ptr, char **str)
+{
+	int	j;
+
+	j = check_var_quotes(*str, 0);
+	if (j)
+		put_quotes(str, j);
+	find_variable(str, 0, 0);
+	*str = rm_quote(str, 0, 0);
+	if (!(*ptr)->args)
+	{
+		if (!(**str))
+			(*ptr)->args = ft_realloc(NULL, ft_strdup(""));
+		else if (j)
+			(*ptr)->args = ft_split(*str, ' ');
+		else
+			(*ptr)->args = ft_realloc((*ptr)->args, ft_strdup(*str));
+	}
+	else
+		(*ptr)->args = ft_realloc((*ptr)->args, ft_strdup(*str));
 }
 
 /*----------------------------------------------------------------*/
@@ -47,7 +71,7 @@ int	check_var_quotes(char *str, int *qu)
 					i++;
 			i++;
 		}
-		if (str[i] == '$' && (ft_isalpha(str[i + 1]) || str[i + 1] == 95))
+		if (str[i] == '$' && (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
 			j++;
 	}
 	return (j);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_cmd_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 10:23:17 by araqioui          #+#    #+#             */
-/*   Updated: 2023/04/21 02:57:29 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:13:45 by araqioui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	*pass_the_quotes(char *str)
 	while (*str && *str != check)
 		str++;
 	str++;
-	while (*str && *str != ' ' && *str != 34 && *str != 39
+	while (*str && !ft_space(*str) && *str != 34 && *str != 39
 		&& *str != '|' && *str != '<' && *str != '>')
 		str++;
 	return (str);
@@ -33,7 +33,7 @@ static void	nb_of_strings(char const *str, int *count)
 	*count = 0;
 	while (*str)
 	{
-		if (*str != 32)
+		if (!ft_space(*str))
 		{
 			(*count)++;
 			if (*str == 124 || *str == 60 || *str == 62)
@@ -41,16 +41,16 @@ static void	nb_of_strings(char const *str, int *count)
 				str++;
 				if (*str == 60 || *str == 62)
 					str++;
-				if (*str && *str != 32)
+				if (*str && !ft_space(*str))
 					(*count)++;
 			}
 		}
-		while (*str && *str != ' ' && *str != 34 && *str != 39
+		while (*str && !ft_space(*str) && *str != 34 && *str != 39
 			&& *str != '|' && *str != '<' && *str != '>')
 			str++;
 		while (*str == 34 || *str == 39)
 			str = pass_the_quotes((char *)str);
-		while (*str && *str == 32)
+		while (*str && ft_space(*str))
 			str++;
 	}
 }
@@ -71,7 +71,7 @@ static int	word_len(char const *s)
 		return (1);
 	}
 	i = 0;
-	while (s[i] && s[i] != 32)
+	while (s[i] && !ft_space(s[i]))
 	{
 		if (s[i] == 34 || s[i] == 39)
 		{
@@ -119,14 +119,14 @@ char	**split_cmd_line(char const *s)
 	j = 0;
 	while (*s)
 	{
-		if (*s != 32)
+		if (!ft_space(*s))
 		{
 			sep[i] = ft_word(s, &j);
 			if (!sep[i++])
 				return (ft_clear(sep), NULL);
 		}
 		s = s + j;
-		while (*s && *s == 32)
+		while (*s && ft_space(*s))
 			s++;
 	}
 	return (sep);

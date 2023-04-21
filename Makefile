@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+         #
+#    By: araqioui <araqioui@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 08:59:19 by samjaabo          #+#    #+#              #
-#    Updated: 2023/04/21 03:03:49 by samjaabo         ###   ########.fr        #
+#    Updated: 2023/04/21 14:18:27 by araqioui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 MAIN_SRC = signals.c main.c lists.c exec.c redirection.c utils.c cmd_path.c builtin_utils.c \
 			pipe.c here_doc.c env_default.c export.c selection_sort.c \
