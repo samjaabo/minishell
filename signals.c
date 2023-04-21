@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 18:23:42 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 21:26:27 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 02:53:14 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,31 @@ int	ft_signals(void)
 		return (ft_error("signal function",
 				"fail to set signal handler for SIGQUIT\n"), ERROR);
 	return (SUCCESS);
+}
+
+void	ft_print_signal(void)
+{
+	int	sig;
+
+	sig = g_data.exit_status - 128;
+	if (sig == SIGHUP)
+		printf("Hangup: 1\n");
+	else if (sig == SIGILL)
+		printf("Illegal instruction: 4\n");
+	else if (sig == SIGTRAP)
+		printf("Trace/BPT trap: 5\n");
+	else if (sig == SIGTERM)
+		printf("Terminated: 15\n");
+	else if (sig == SIGSEGV)
+		printf("Segmentation fault: 11\n");
+	else if (sig == SIGKILL)
+		printf("Killed: 9\n");
+	else if (sig == SIGABRT)
+		printf("Abort trap: 6\n");
+	else if (sig == SIGFPE)
+		printf("Floating point exception: 8\n");
+	else if (sig == SIGXCPU)
+		printf("Cputime limit exceeded: 24\n");
+	else if (sig == SIGBUS)
+		printf("Bus error: 10\n");
 }

@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 18:25:09 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 21:46:17 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 02:53:44 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,10 @@ static int	ft_wait(pid_t pid)
 	if (pid >= 0 && WIFEXITED(g_data.exit_status))
 		g_data.exit_status = WEXITSTATUS(g_data.exit_status);
 	else if (pid >= 0 && WIFSIGNALED(g_data.exit_status))
+	{
 		g_data.exit_status = WTERMSIG(g_data.exit_status) + 128;
+		ft_print_signal();
+	}
 	errno = 0;
 	while (errno == 0)
 		wait(NULL);

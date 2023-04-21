@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 15:06:58 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/20 22:21:05 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 02:53:24 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct s_str_len
 
 extern t_data	g_data;
 
+void	ft_print_signal(void);
 void	ft_addlast(t_cmd **head, t_cmd *new);
 void	ftx_lstclear(t_cmd **head);
 int		ft_redirection(t_cmd *cmd);
