@@ -6,7 +6,7 @@
 /*   By: samjaabo <samjaabo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 11:11:11 by samjaabo          #+#    #+#             */
-/*   Updated: 2023/04/21 02:57:29 by samjaabo         ###   ########.fr       */
+/*   Updated: 2023/04/21 03:13:47 by samjaabo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ft_check_args(char **args)
 	while (ft_isdigit(args[1][i]))
 		++i;
 	if (args[1] && args[2] && args[1][i] == 0)
-		return (ft_error(args[0], "too many arguments"), 0);
+		return (ft_error(args[0], "too many arguments"), 10);
 	if (args[1][i] != 0)
 	{
 		ft_builtin_error(args[0], args[1], "numeric argument required");
@@ -53,11 +53,10 @@ void	ft_builtin_exit(char **args, t_cmd **cmd)
 	if (!args)
 		return ;
 	if (!args[1])
-	{
-		ftx_lstclear(cmd);
-		ft_exit();
-	}
+		return (ftx_lstclear(cmd), ft_exit());
 	g_data.exit_status = SUCCESS;
+	if (ft_check_args(args) == 10)
+		return ;
 	if (ft_check_args(args))
 	{
 		i = 0;
